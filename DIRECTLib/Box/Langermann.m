@@ -9,18 +9,27 @@ function y = Langermann(x)
 %
 % Globally optimal solution:
 %   f = -4.1558092918
-%   x(i) = [0], i = 1...n
-%   x = zeros(n, 1);
+%   x = [2.79340196434474; 1.59723280665210]
 %
 % Variable bounds:
 %   0 <= x(i) <= 10, i = 1...2
-%   bounds = ones(2, 1).*[0, 10];
 %
 % Problem Properties:
 %   n  = 2;
 %   #g = 0;
 %   #h = 0;
 % -------------------------------------------------------------------------
+if nargin == 0
+    y.nx = 2;
+    y.ng = 0;
+    y.nh = 0;
+    y.xl = @(i) 0;
+    y.xu = @(i) +10;
+    y.fmin = @(i) -4.155809291843469;
+    xmin = [2.79340196434474;1.59723280665210];
+    y.xmin = @(i) xmin(i);
+    return
+end
 d = length(x);
 m = 5;
 c = [1, 2, 5, 2, 3];

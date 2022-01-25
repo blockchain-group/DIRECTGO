@@ -9,17 +9,27 @@ function y = Power_Sum(x)
 %
 % Globally optimal solution:
 %   f = 0
-%   x = (1:n)'
+%   x = [1; 3; 2; 2]
 %
 % Variable bounds:
 %   0 <= x(i) <= 4, i = 1...n
-%   bounds = ones(n, 1).*[0, 4];
 %   
 % Problem Properties:
-%   n  = any dimension;
+%   n  = 4;
 %   #g = 0;
 %   #h = 0;
 % -------------------------------------------------------------------------
+if nargin == 0
+    y.nx = 4;
+    y.ng = 0;
+    y.nh = 0;
+    y.xl = @(i) 0;
+    y.xu = @(i) +4;
+    y.fmin = @(i) 0;
+    xmin = [1; 3; 2; 2];
+    y.xmin = @(i) xmin(i);
+    return
+end
 n = length(x);
 b = [8, 18, 44, 114];
 s_out = 0;

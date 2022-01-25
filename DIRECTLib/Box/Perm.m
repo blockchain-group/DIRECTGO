@@ -9,17 +9,26 @@ function [y] = Perm(x)
 %
 % Globally optimal solution:
 %   f = 0
-%   x = (1:n)'
+%   x = (1:n)
 %
 % Variable bounds:
 %   -i <= x(i) <= i, i = 1...n
-%    bounds = [-(1:n)', (1:n)']
 %   
 % Problem Properties:
 %   n  = any dimension;
 %   #g = 0;
 %   #h = 0;
 % -------------------------------------------------------------------------
+if nargin == 0
+    y.nx = 0;
+    y.ng = 0;
+    y.nh = 0;
+    y.xl = @(i) -i;
+    y.xu = @(i) +i;
+    y.fmin = @(i) 0;
+    y.xmin = @(i) i;
+    return
+end
 b = 0.5;
 d = length(x);
 outer = 0;

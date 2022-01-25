@@ -14,13 +14,22 @@ function y = Powell(xx)
 %
 % Variable bounds:
 %   -4 <= x(i) <= 5, i = 1...n
-%   bounds = ones(n, 1).*[-4, 5];
 %   
 % Problem Properties:
 %   n  = 4;
 %   #g = 0;
 %   #h = 0;
 % -------------------------------------------------------------------------
+if nargin == 0
+    y.nx = 4;
+    y.ng = 0;
+    y.nh = 0;
+    y.xl = @(i) -4;
+    y.xu = @(i) +5;
+    y.fmin = @(i) 0;
+    y.xmin = @(i) 0;
+    return
+end
 d = length(xx);
 sum = 0;
 

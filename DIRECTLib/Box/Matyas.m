@@ -13,12 +13,21 @@ function y = Matyas(x)
 %
 % Variable bounds:
 %   -10 <= x(i) <= 15, i = 1...2
-%   bounds = ones(2, 1).*[-10, 15];
 %   
 % Problem Properties:
 %   n  = 2;
 %   #g = 0;
 %   #h = 0;
 % -------------------------------------------------------------------------
+if nargin == 0
+    y.nx = 2;
+    y.ng = 0;
+    y.nh = 0;
+    y.xl = @(i) -10;
+    y.xu = @(i) +15;
+    y.fmin = @(i) 0;
+    y.xmin = @(i) 0;
+    return
+end
 y = 0.26*(x(1)^2 + x(2)^2) - 0.48*x(1)*x(2);
 end

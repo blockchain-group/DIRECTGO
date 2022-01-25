@@ -1,5 +1,5 @@
-function Value = zy2(x)
-% ------------------------------------------------------------------------------
+function y = zy2(x)
+% -------------------------------------------------------------------------
 % MATLAB coding by: Linas Stripinis
 % Name:
 %   zy2.m
@@ -10,7 +10,7 @@ function Value = zy2(x)
 %
 % Globally optimal solution:
 %   f* = 2
-%   x* = (1.725, 0.25, 0.25) 
+%   x* = (0; 2; 0) 
 %
 % Constraints (including variable bounds):
 %     g(1) = -x(1)^2 - x(2)^2 - x(3)^2 + 4 <=0  
@@ -22,9 +22,27 @@ function Value = zy2(x)
 %   
 % Problem Properties:
 %   n  = 3;
-%   #g = 2;
+%   #g = 3;
 %   #h = 0;  
-% ------------------------------------------------------------------------------ 
-    Value = x(1)^3 - 6*x(1)^2 + 11*x(1) + x(2) + x(3);
+% -------------------------------------------------------------------------
+if nargin == 0
+    y.nx = 3;
+    y.ng = 2;
+    y.nh = 0;
+    y.xl = @(i) 0;
+    y.xu = @(i) 10;
+    y.fmin = @(i) 2;
+    xmin = [0; 2; 0];
+    y.xmin = @(i) xmin(i);
+    y.confun = @(i) zy2c(i);
+    return
+end
+    y = x(1)^3 - 6*x(1)^2 + 11*x(1) + x(2) + x(3);
 end
 
+function [Ineq, eq] = zy2c(x)
+    Ineq(1) = -x(1)^2 - x(2)^2 - x(3)^2 + 4;  
+    Ineq(2) = x(1)^2 + x(2)^2 + x(3)^2 - 10; 
+    Ineq(3) = x(3) - 5; 
+    eq = [];
+end

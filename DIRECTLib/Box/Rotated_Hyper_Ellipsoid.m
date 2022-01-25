@@ -21,6 +21,16 @@ function y = Rotated_Hyper_Ellipsoid(x)
 %   #g = 0;
 %   #h = 0;
 % -------------------------------------------------------------------------
+if nargin == 0
+    y.nx = 0;
+    y.ng = 0;
+    y.nh = 0;
+    y.xl = @(i) -65.536;
+    y.xu = @(i) +66.536;
+    y.fmin = @(i) 0;
+    y.xmin = @(i) 0;
+    return
+end
 d = length(x);
 outer = 0;
 for ii = 1:d

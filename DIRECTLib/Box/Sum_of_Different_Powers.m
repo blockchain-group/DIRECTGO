@@ -10,17 +10,25 @@ function y = Sum_of_Different_Powers(x)
 % Globally optimal solution:
 %   f = 0
 %   x(i) = [0], i = 1...n
-%   x = zeros(n, 1);
 %
 % Variable bounds:
 %   -1 <= x(i) <= 2.5, i = 1...n
-%   bounds = ones(n, 1).*[-1, 2.5];
 %   
 % Problem Properties:
 %   n  = any dimension;
 %   #g = 0;
 %   #h = 0;
 % -------------------------------------------------------------------------
+if nargin == 0
+    y.nx = 0;
+    y.ng = 0;
+    y.nh = 0;
+    y.xl = @(i) -1;
+    y.xu = @(i) +2.5;
+    y.fmin = @(i) 0;
+    y.xmin = @(i) 0;
+    return
+end
 d = length(x);
 sum = 0;
 for ii = 1:d

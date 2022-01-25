@@ -10,17 +10,25 @@ function y = Qing(x)
 % Globally optimal solution:
 %   f = 0
 %   x(i) = [sqrt(i)], i = 1...n
-%   x = sqrt((1:10)');
 %
 % Variable bounds:
 %   -500 <= x(i) <= 500, i = 1...n
-%   bounds = ones(n, 1).*[-500, 500];
 %   
 % Problem Properties:
 %   n  = any dimension;
 %   #g = 0;
 %   #h = 0;
 % -------------------------------------------------------------------------
+if nargin == 0
+    y.nx = 0;
+    y.ng = 0;
+    y.nh = 0;
+    y.xl = @(i) -500;
+    y.xu = @(i) +500;
+    y.fmin = @(i) 0;
+    y.xmin = @(i) i^(1/2);
+    return
+end
 n = length(x);
 y = 0;
 for i = 1:n

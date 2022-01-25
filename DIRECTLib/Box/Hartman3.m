@@ -8,18 +8,28 @@ function y = Hartman3(x)
 %  - http://www-optima.amp.i.kyoto-u.ac.jp/member/student/hedar/Hedar_files/TestGO_files/Page1488.htm
 %
 % Globally optimal solution:
-%   f = -3.86278214780000
-%   x = [0.114614; 0.555649; 0.852547]
+%   f = -3.8627821478207558
+%   x = [0.1146143418950719; 0.5556488502790051; 0.8525469532210148]
 %
 % Variable bounds:
 %   0 <= x(i) <= 1, i = 1...3
-%   bounds = ones(3, 1).*[0, 1];
 %   
 % Problem Properties:
 %   n  = 3;
 %   #g = 0;
 %   #h = 0;
 % ------------------------------------------------------------------------------
+if nargin == 0
+    y.nx = 3;
+    y.ng = 0;
+    y.nh = 0;
+    y.xl = @(i) -0;
+    y.xu = @(i) +1;
+    y.fmin = @(i) -3.8627821478207558;
+    xmin = [0.1146143418950719; 0.5556488502790051; 0.8525469532210148];
+    y.xmin = @(i) xmin(i);
+    return
+end
 a(:, 2) = 10.0*ones(4, 1);
 for j=1:2
     a(2*j - 1, 1) = 3.0;

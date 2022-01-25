@@ -14,13 +14,22 @@ function y = Sphere(x)
 %
 % Variable bounds:
 %   -5.12 <= x(i) <= 6.12, i = 1...n
-%   bounds = ones(n, 1).*[-5.12, 6.12];
 %   
 % Problem Properties:
 %   n  = any dimension;
 %   #g = 0;
 %   #h = 0;
 % -------------------------------------------------------------------------
+if nargin == 0
+    y.nx = 0;
+    y.ng = 0;
+    y.nh = 0;
+    y.xl = @(i) -5.12;
+    y.xu = @(i) +6.12;
+    y.fmin = @(i) 0;
+    y.xmin = @(i) 0;
+    return
+end
 n = length(x);
 s = 0;
 for j = 1:n

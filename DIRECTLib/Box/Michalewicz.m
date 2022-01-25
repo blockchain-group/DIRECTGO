@@ -31,13 +31,22 @@ function y = Michalewicz(x)
 %
 % Variable bounds:
 %   0 <= x(i) <= pi, i = 1...n
-%   bounds = ones(n, 1).*[0, pi];
 %   
 % Problem Properties:
 %   n  = any dimension;
 %   #g = 0;
 %   #h = 0;
 % -------------------------------------------------------------------------
+if nargin == 0
+    y.nx = 0;
+    y.ng = 0;
+    y.nh = 0;
+    y.xl = @(i) 0;
+    y.xu = @(i) pi;
+    y.fmin = @(i) michalewicz_minimum(i);
+    y.xmin = @(i) michalewicz_xmin(i);
+    return
+end
 n = length(x);
 m = 10;
 s = 0;
@@ -46,3 +55,106 @@ for i = 1:n
 end
 y = -s;
 end
+%--------------------------------------------------------------------------
+% Compute numerically the minimum of the Michalewicz function for a given
+% dimension.
+%--------------------------------------------------------------------------
+function fmin = michalewicz_minimum(dim)
+    fmin = 0;
+    xmin = zeros(1,dim);
+% compute the minimum for each dimension
+    for d = 1:dim
+% compute the location of the peak, which is very close to the minimum
+        n = round(0.25*d -0.5);
+        fraction = sqrt((2*n+1)/(2*d));
+        
+% if the fraction equals 0.5, the peak is located at the minimum.
+        if fraction == 0.5
+            fmin = fmin  + -1;
+            xmin(d) = 0.5*pi;
+            continue;
+        end
+        
+% determine the search domain for ternary search
+        if (fraction < 0.5)
+            x0 = fraction*pi;
+            x3 = 0.5*pi;
+        else
+            x0 = 0.5*pi;
+            x3 = fraction*pi;
+        end
+        
+% ternary search
+        while(abs(x3-x0) > 1e-14)
+            x1 = x0+(x3-x0)/3;
+            f1 = -sin(x1).*(sin(d*x1.^2/pi).^20);
+            
+            x2 = x3-(x3-x0)/3;
+            f2 = -sin(x2).*(sin(d*x2.^2/pi).^20);
+            
+            % update the search range
+            if( f2 < f1 )
+                x0 = x1;
+            else
+                x3 = x2;
+            end
+        end
+        
+        % update the values of the minimum
+        xmin(d) = (x3+x0)/2;
+        f = -sin(xmin(d)).*(sin(d*xmin(d).^2/pi).^20);
+        fmin = fmin + f;
+    end
+end  
+%--------------------------------------------------------------------------
+% Compute numerically the minimum of the Michalewicz function for a given
+% dimension.
+%--------------------------------------------------------------------------
+function xmin = michalewicz_xmin(dim)
+    fmin = 0;
+    xmin = zeros(1,dim);
+% compute the minimum for each dimension
+    for d = 1:dim
+% compute the location of the peak, which is very close to the minimum
+        n = round(0.25*d -0.5);
+        fraction = sqrt((2*n+1)/(2*d));
+        
+% if the fraction equals 0.5, the peak is located at the minimum.
+        if fraction == 0.5
+            fmin = fmin  + -1;
+            xmin(d) = 0.5*pi;
+            continue;
+        end
+        
+% determine the search domain for ternary search
+        if (fraction < 0.5)
+            x0 = fraction*pi;
+            x3 = 0.5*pi;
+        else
+            x0 = 0.5*pi;
+            x3 = fraction*pi;
+        end
+        
+% ternary search
+        while(abs(x3-x0) > 1e-14)
+            x1 = x0+(x3-x0)/3;
+            f1 = -sin(x1).*(sin(d*x1.^2/pi).^20);
+            
+            x2 = x3-(x3-x0)/3;
+            f2 = -sin(x2).*(sin(d*x2.^2/pi).^20);
+            
+            % update the search range
+            if( f2 < f1 )
+                x0 = x1;
+            else
+                x3 = x2;
+            end
+        end
+        
+        % update the values of the minimum
+        xmin(d) = (x3+x0)/2;
+        f = -sin(xmin(d)).*(sin(d*xmin(d).^2/pi).^20);
+        fmin = fmin + f;
+    end
+    xmin = xmin(dim);
+end  

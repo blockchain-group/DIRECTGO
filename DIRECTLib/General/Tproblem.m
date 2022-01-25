@@ -1,4 +1,4 @@
-function f = Tproblem(x)
+function y = Tproblem(x)
 % ------------------------------------------------------------------------------
 % MATLAB coding by: Linas Stripinis
 % Name:
@@ -10,7 +10,7 @@ function f = Tproblem(x)
 %
 % Globally optimal solution:
 %   f* = -n
-%   x* = (-) 
+%   x* = [-1, -1, ..., -1]  
 %
 % Constraints (including variable bounds):
 %   g(1): sum(x(i)^2) - n <= 0;, i = 1...n
@@ -20,10 +20,32 @@ function f = Tproblem(x)
 %   n  = any dimension;
 %   #g = 1;
 %   #h = 0;  
-% ------------------------------------------------------------------------------ 
-n = length(x);
-f = 0;
-for i = 1:n
-    f = f + x(i);
+% -------------------------------------------------------------------------
+if nargin == 0
+    y.nx = 0;
+    y.ng = 1;
+    y.nh = 0;
+    y.xl = @(i) -i;
+    y.xu = @(i) +i;
+    y.fmin = @(i) -i;
+    y.xmin = @(i) -1;
+    y.confun = @(i) Tproblemc(i);
+    return
 end
+
+n = length(x);
+y = 0;
+for i = 1:n
+    y = y + x(i);
+end
+end
+
+function [c, ceq] = Tproblemc( x )
+n = length(x);
+ff = 0;
+for i = 1:n
+    ff = ff + x(i)^2;
+end
+c = ff - n;
+ceq = [];
 end
