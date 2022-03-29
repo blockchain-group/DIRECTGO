@@ -350,9 +350,11 @@ else
     VAL.fMinNotImpr    = 0;
     VAL.fMinBeforeImpr = minval;
 end
+
+VAL.time = toc;
+
 % Show iteration stats
 if SS.showITS == 1
-    VAL.time = toc;
     fprintf(...
     'Iter: %4i   f_min: %15.10f    time(s): %10.05f    fn evals: %8i\n',...
         VAL.itctr, minval, VAL.time, VAL.fcount);

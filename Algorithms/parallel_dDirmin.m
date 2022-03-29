@@ -583,9 +583,10 @@ end
 [KK, TT, I, DEL, fcnc] = DIVas(VAL, SS, hul);
 DATA = {KK, TT, I, size(I, 1), DEL, fmin};
 
+VAL.time = toc;
+
 % Show iteration stats
 if SS.showITS == 1
-    VAL.time = toc;
     fprintf(...
     'Iter: %4i  f_min: %15.10f    time(s): %10.05f  local searches: %4i    fn evals: %8i\n',...
      VAL.itctr, fmin, VAL.time, VAL.nLs, VAL.fcount + VAL.Local);
@@ -611,9 +612,10 @@ if VAL.itctr >= SS.MAXits
     disp('Exceeded max iterations. Increase maxits'); VAL.perror = -1;
 end
 % Have we exceeded the maxevals?
-if VAL.fcount > SS.MAXevals
+if VAL.fcount + VAL.Local > SS.MAXevals
     disp('Exceeded max fcn evals. Increase maxevals'); VAL.perror = -1;
 end
+
 % Have we exceeded max deep?
 if SS.MAXdeep <= VAL.count + VAL.n
     disp('Exceeded Max depth. Increse maxdeep'); VAL.perror = -1;

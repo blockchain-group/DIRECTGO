@@ -188,9 +188,9 @@ Xmin = MSS.CC(:, 1);                              % initial point
 % Check stop condition if global minima is known
 if OPTI.TESTflag  == 1
     if OPTI.globalMIN ~= 0
-        VAL.perror = (Fmin - OPTI.globalMIN)/abs(OPTI.globalMIN);
+        VAL.perror = 100*(Fmin - OPTI.globalMIN)/abs(OPTI.globalMIN);
     else
-        VAL.perror = Fmin;
+        VAL.perror = 100*Fmin;
     end
 else
     VAL.perror   = 2;
@@ -214,8 +214,9 @@ function [VAL, Fmin, Xmin] = Arewedone(OPTI, VAL, MSS)
 [Fmin, fminindex] =  min(MSS.FF(1:VAL.I));
 Xmin              = MSS.CC(:, fminindex);
 
+VAL.time = toc;
+
 if OPTI.showITS == 1                % Show iteration stats
-    VAL.time = toc;
     fprintf(...
     'Iter: %4i   f_min: %15.10f    time(s): %10.05f    fn evals: %8i\n',...
         VAL.itctr, Fmin, VAL.time, VAL.I);

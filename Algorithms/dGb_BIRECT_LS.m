@@ -370,9 +370,10 @@ if (VAL.fMinNotImpr > 0) && (abs(VAL.f_min_general - VAL.fminloc) >...
     end
 end
 
+VAL.time = toc;
+
 % Show iteration stats
 if SS.showITS == 1
-    VAL.time = toc;
     fprintf(...
         'Iter: %4i  f_min: %15.10f    time(s): %10.05f  local searches: %4i    fn evals: %8i\n',...
         VAL.itctr, VAL.f_min_general, VAL.time, VAL.nLocSearch, VAL.fcount + VAL.nFunc);

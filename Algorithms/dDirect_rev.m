@@ -366,10 +366,10 @@ XX           = [Xmin, VAL.x_min_general];
 Xmin         = XX(:, indexs);
 
 VAL.fmin_old = mm;
+VAL.time = toc;
 
 % Show iteration stats
 if SS.showITS == 1
-    VAL.time = toc;
     fprintf(...
     'Iter: %4i  f_min: %15.10f    time(s): %10.05f  local searches: %4i    fn evals: %8i\n',...
         VAL.itctr, min(VAL.Flocal, mm), VAL.time, VAL.nLs, VAL.fcount + VAL.Local);

@@ -52,10 +52,10 @@ function [ret_minval, final_xatmin, history] = parallel_dPlor...
 %
 % Selection of potential optimal hyper-rectangles taken from:
 %--------------------------------------------------------------------------
-% Mockus, J., Paulavicius, R., Rusakevi?ius, D., Šešok, D., and
+% Mockus, J., Paulavicius, R., Rusakevi?ius, D., ÂŠeÂšok, D., and
 % Zilinskas, J. "Application of Reduced-set Pareto-Lipschitzian
 % Optimization to truss optimization. Journal of Global Optimization.
-% 67(1):425–450, (2017). DOI 10.1007/s10898-015-0364-6
+% 67(1):425â€“450, (2017). DOI 10.1007/s10898-015-0364-6
 %--------------------------------------------------------------------------
 if nargin == 2, bounds = []; end
 if nargin == 1, bounds = []; opts = []; end
@@ -540,9 +540,10 @@ end
 [KK, TT, I, DEL, fcnc] = DIVas(VAL, SS, hul);
 DATA = {KK, TT, I, size(I, 1), DEL, fmin};
 
+VAL.time = toc;
+
 % Show iteration stats
 if SS.showITS == 1
-    VAL.time = toc;
     fprintf('Iter: %4i   f_min: %15.10f    time(s): %10.05f    fn evals: %8i\n',...
         VAL.itctr, fmin, VAL.time, VAL.fcount);
 end

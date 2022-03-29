@@ -577,9 +577,10 @@ end
 [KK, TT, I, DEL, fcnc] = DIVas(VAL, SS, hul);
 DATA = {KK, TT, I, size(I, 1), DEL, fmin, VAL.ep};
 
+VAL.time = toc;
+
 % Show iteration stats
 if SS.showITS == 1
-    VAL.time = toc;
     fprintf('Iter: %4i   f_min: %15.10f    time(s): %10.05f    fn evals: %8i\n',...
         VAL.itctr, fmin, VAL.time, VAL.fcount);
 end

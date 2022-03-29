@@ -397,10 +397,10 @@ if VAL.epsil == 0
     if VAL.STAG == 10, DATA{7} = 2; DATA{9} = 1; end
 end
 VAL.xatmin = xmin;
+VAL.time = toc;
 
 % Show iteration stats
 if SS.showITS == 1
-    VAL.time = toc;
     if constrain == 0
         fprintf('Iter: %4i   f_min: %15.10f    time(s): %10.05f    fn evals: %8i\n',...
             VAL.itctr,fmin,VAL.time,VAL.fcn);

@@ -349,8 +349,8 @@ if VAL.epsil == 0
 end
 VAL.Xmin = Xmin;
 %--------------------------------------------------------------------------
+VAL.time = toc;
 if OPTI.showITS == 1               % Show iteration stats
-    VAL.time = toc;
     fprintf(...
         'Iter: %4i   f_min: %15.10f    time(s): %10.05f    fn evals: %8i\n',...
         VAL.itctr, Fmin, VAL.time, VAL.I);

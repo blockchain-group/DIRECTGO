@@ -580,11 +580,10 @@ POH_G = Find_po(MSS, SS, fmin, [MSV(1, :); MSV(2, :)]);
 [KK, TT, I, DEL, fcnc] = DIVas(POH_G, VAL, MSV, SS, MDD(:, POH_G));
 DATA = {KK, TT, I, size(I, 1), DEL, fmin};
 
-
+VAL.time = toc;
 
 % Show iteration stats
 if SS.showITS == 1
-    VAL.time = toc;
     fprintf(...
     'Iter: %4i  f_min: %15.10f    time(s): %10.05f  local searches: %4i    fn evals: %8i\n',...
     VAL.itctr, min(VAL.Flocal, fmin), VAL.time, VAL.nLs, VAL.fcount + VAL.Local);

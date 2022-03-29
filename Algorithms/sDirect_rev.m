@@ -193,9 +193,9 @@ VAL.x_min_general = Xmin;
 % Check stop condition if global minima is known
 if OPTI.TESTflag  == 1
     if OPTI.globalMIN ~= 0
-        VAL.perror = (Fmin - OPTI.globalMIN)/abs(OPTI.globalMIN);
+        VAL.perror = 100*(Fmin - OPTI.globalMIN)/abs(OPTI.globalMIN);
     else
-        VAL.perror = Fmin;
+        VAL.perror = 100*Fmin;
     end
 else
     VAL.perror   = 2;
@@ -237,8 +237,9 @@ Xmin         = XX(:, indexs);
 
 VAL.fmin_old = Fmin;
 
+VAL.time = toc;
+
 if OPTI.showITS == 1                % Show iteration stats
-    VAL.time = toc;
     fprintf(...
     'Iter: %4i  f_min: %15.10f    time(s): %10.05f  local searches: %4i    fn evals: %8i\n',...
         VAL.itctr, min(VAL.Flocal, Fmin), VAL.time, VAL.nLs, VAL.I + VAL.Local);

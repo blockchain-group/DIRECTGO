@@ -329,8 +329,8 @@ TM            = find(MSS.XX(1:VAL.I) > 0);
 MSS.df(TM)    = abs(MSS.FF(TM) - Fmin);
 
 %--------------------------------------------------------------------------
+VAL.time = toc;
 if OPTI.showITS == 1               % Show iteration stats
-    VAL.time = toc;
     fprintf(...
         'Iter: %4i   f_min: %15.10f    time(s): %10.05f    fn evals: %8i\n',...
         VAL.itctr, Fmin, VAL.time, VAL.I);

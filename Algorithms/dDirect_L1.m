@@ -364,9 +364,10 @@ return
 %--------------------------------------------------------------------------
 function [VAL, SS] = Arewedone(minval, VAL, SS, MSS)
 %--------------------------------------------------------------------------
+VAL.time = toc;
+
 % Show iteration stats
 if SS.showITS == 1
-    VAL.time = toc;
     if minval(2) > 0
         fprintf(...
             'Iter: %4i   f_min: %15.10f*    time(s): %10.05f    fn evals: %8i\n',...
