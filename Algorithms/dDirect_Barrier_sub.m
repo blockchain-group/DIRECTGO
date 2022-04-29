@@ -144,7 +144,7 @@ end
 % minimum value of function
         OPTI.globalMIN  = getInfo.fmin(VAL.n);
 % minimum point of function
-        OPTI.globalXMIN = arrayfun(@(i) getInfo.xmin(i), 1:VAL.n)';
+        OPTI.globalXMIN = getInfo.xmin(VAL.n);
     end
 else
     VAL.a = bounds(:, 1);               % left bound
@@ -165,7 +165,7 @@ OPTI.showITS   = showits;  % print iteration stat
 OPTI.TOL       = tol;      % allowable relative error if f_reach is set
 OPTI.ept       = ept;      % tollerance for constraints
 OPTI.ep        = ep;       % global/local weight parameter
-OPTI.sub         = sub;    % numbers of iterations in which sub
+OPTI.sub       = sub;      % numbers of iterations in which sub
                            % dividing step will be performed
 %--------------------------------------------------------------------------
 return

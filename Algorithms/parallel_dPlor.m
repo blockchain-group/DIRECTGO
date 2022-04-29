@@ -139,7 +139,7 @@ if isempty(bounds)
 % minimum value of function
         OPTI.globalMIN  = getInfo.fmin(VAL.n);
 % minimum point of function
-        OPTI.globalXMIN = arrayfun(@(i) getInfo.xmin(i), 1:VAL.n)';
+        OPTI.globalXMIN = getInfo.xmin(VAL.n);
     end
 else
     VAL.a = bounds(:, 1);               % left bound

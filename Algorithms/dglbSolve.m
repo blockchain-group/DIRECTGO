@@ -126,7 +126,7 @@ if isempty(bounds)
 % minimum value of function
         OPTI.globalMIN  = getInfo.fmin(VAL.n);
 % minimum point of function
-        OPTI.globalXMIN = arrayfun(@(i) getInfo.xmin(i), 1:VAL.n)';
+        OPTI.globalXMIN = getInfo.xmin(VAL.n);
     end
 else
     VAL.a = bounds(:, 1);               % left bound
@@ -190,7 +190,7 @@ MSS(1).E(1) = single(1);                            % Index
 Xmin = MSS(1).C(:, 1);                              % initial point
 CE(1) = 1;
 
-
+VAL
 % Check stop condition if global minima is known
 if SS.TESTflag  == 1
     if SS.globalMIN ~= 0

@@ -126,7 +126,7 @@ if isempty(bounds)
 % minimum value of function
         OPTI.globalMIN  = getInfo.fmin(VAL.n);
 % minimum point of function
-        OPTI.globalXMIN = arrayfun(@(i) getInfo.xmin(i), 1:VAL.n)';
+        OPTI.globalXMIN = getInfo.xmin(VAL.n);
     end
 else
     VAL.a = bounds(:, 1);               % left bound
@@ -525,7 +525,7 @@ for i = 1:index
                     (tmp_szes - hull{2, i}(j));
                 ub{i}(j) = min(tmp_ubs);
             else
-                ub{i}(j) = 1.976e14;
+                ub{i}(j) = 1.976e20;
             end
         end
     end
@@ -552,7 +552,7 @@ for i = 1:index
                     (hull{2, i}(j) - tmp_szes);
                 lb{i}(j) = max(tmp_ubs);
             else
-                lb{i}(j) = -1.976e14;
+                lb{i}(j) = -1.976e20;
             end
         end
     end

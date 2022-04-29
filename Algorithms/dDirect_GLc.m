@@ -75,7 +75,7 @@ if nargin == 1, bounds = []; opts = []; end
 [MSS, CE, third, VAL] = Alocate(SS, VAL);
 
 % Initialization step
-[MV, MD, MSS, CE, VAL, minval] = Initialization(Problem, MSS, CE, VAL,...
+[MV, MD, MSS, CE, VAL, minval, xatmin] = Initialization(Problem, MSS, CE, VAL,...
     third, SS);
 
 while VAL.perror > SS.TOL                 % Main loop
@@ -148,7 +148,7 @@ end
 % minimum value of function
         OPTI.globalMIN  = getInfo.fmin(VAL.n);
 % minimum point of function
-        OPTI.globalXMIN = arrayfun(@(i) getInfo.xmin(i), 1:VAL.n)';
+        OPTI.globalXMIN = getInfo.xmin(VAL.n);
     end
 else
     VAL.a = bounds(:, 1);               % left bound
@@ -205,7 +205,7 @@ return
 % Function  : Initialization
 % Purpose   : Initialization of the DIRECT
 %--------------------------------------------------------------------------
-function [MV, MD, MSS, CE, VAL, minval] = Initialization(Problem, MSS,...
+function [MV, MD, MSS, CE, VAL, minval, xatmin] = Initialization(Problem, MSS,...
     CE, VAL, third, SS)
 %--------------------------------------------------------------------------
 % Create Initial values
@@ -213,9 +213,9 @@ function [MV, MD, MSS, CE, VAL, minval] = Initialization(Problem, MSS,...
 MSS(1).L(:, 1) = zeros(VAL.n, 1);                      % Lengths
 MSS(1).C(:, 1) = ones(VAL.n, 1)/2;                     % Center point
 MSS(1).E(1) = 1;                                       % Index
-point = abs(VAL.b - VAL.a).*MSS(1).C(:, 1) + VAL.a;    % Real point
-[minval, MSS(1).F(1)] = deal(feval(Problem.f, point)); % f(x) eval.
-MSS(1).cc(1) = CallC(Problem, point, SS);              % g(x) eval.
+xatmin = abs(VAL.b - VAL.a).*MSS(1).C(:, 1) + VAL.a;    % Real point
+[minval, MSS(1).F(1)] = deal(feval(Problem.f, xatmin)); % f(x) eval.
+MSS(1).cc(1) = CallC(Problem, xatmin, SS);              % g(x) eval.
 MSS(1).ff(1) = ~isequal(MSS(1).cc(1), 0);
 CE(1) = 1;                                             % \# in column.
 
@@ -232,7 +232,7 @@ if MSS(1).ff(1) ~= 0
         [VAL, MSS, CE] = Calulcs(VAL, Problem, MSS, CE, third, POH,...
             Main, SS, 1);
         
-        [MV, MD, minval] = Phase(CE, MSS);
+        [MV, MD, minval, xatmin] = Phase(CE, MSS);
         
         if minval  == 0
             id = 1;
