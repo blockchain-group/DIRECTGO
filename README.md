@@ -1,16 +1,30 @@
 # DIRECTGO
-**DIRECTGO**: A new **DIRECT**-type `MATLAB` toolbox for derivative-free **G**lobal **O**ptimization
+**DIRECTGO**: A new **DIRECT**-type `MATLAB` toolbox for derivative-free **G**lobal **O**ptimization [[29]](https://arxiv.org/abs/2107.02205)
 
 ---
 
 ## Quick overview
 
-The sequential and parallel implementations of various DIRECT-type algorithms. The toolbox consists of two main parts:
+The sequential [[1](http://www4.ncsu.edu/~ctk/Finkel_Direct/), [26](https://doi.org/10.1023/A:1019992822938), [27](https://doi.org/10.1016/j.amc.2020.125596)] and parallel implementations [[27]](https://doi.org/10.1016/j.amc.2020.125596) of various DIRECT-type algorithms. The toolbox consists of two main parts:
 
-- **DIRECTGO.mltbx** - `MATLAB` toolbox package containing implementations of DIRECT-type algorithms, including an extensive [DIRECTGOLib](https://github.com/blockchain-group/DIRECTGOLib) library (maintained separetely) of the box, generally constrained, and practical engineering global optimization problems, often used for benchmarking DIRECT-type algorithms.
+- **DIRECTGO.mltbx** - `MATLAB` toolbox package containing implementations of DIRECT-type algorithms, including an extensive DIRECTGOLib [[28]](https://github.com/blockchain-group/DIRECTGOLib) library (maintained separetely) of the box, generally constrained, and practical engineering global optimization problems, often used for benchmarking DIRECT-type algorithms.
 - **DIRECTGO.mlappinstall** - A single `MATLAB` app installer ﬁle containing everything necessary to install and run the **DIRECTGO** toolbox, including a graphical user interface (GUI).
 
 Additionally, we provide source files of all implemented algorithms in [Algorithms/](Algorithms/) folder.
+
+DIRECTGO v1.0 version presented in [[29]](https://arxiv.org/abs/2107.02205) implements 36 different DIRECT-type algorithms.
+
+## Algorithms within toolbox
+
+Classification (based on the type of constraints) of implemented DIRECT-type algorithms within the toolbox:
+
+
+| Problem type          | Algorithm name & [References]                                |
+| --------------------- | ------------------------------------------------------------ |
+| Box constrained       | DIRECT v4.0 [[1](http://www4.ncsu.edu/~ctk/Finkel_Direct/), [2](https://doi.org/10.1007/BF00941892)], DIRECT-restart [[3]](https://repository.lib.ncsu.edu/handle/1840.4/461), DIRECT-m [[4]]( https://doi.org/10.1007/s10898-006-9029-9), DIRECT-l [[5]](https://doi.org/10.1023/A:1017930332101), DIRECT-rev [[6]](http://www4.ncsu.edu/~ctk/Finkel_Direct/), DIRECT-a [[7]](https://doi.org/10.1007/s10898-012-9952-x), DIRMIN [[8]](https://doi.org/10.1007/s10589-008-9217-2), PLOR [[9]](https://doi.org/10.1007/s10898-015-0364-6), glbSolve [[2](https://doi.org/10.1007/BF00941892), [10](https://www.mat.univie.ac.at/~neum/glopt/mss/BjoeH99.pdf)], glbSolve-sym [[11]](https://doi.org/10.1007/s10898-012-0020-3), glbSolve-sym2 [[11]](https://doi.org/10.1007/s10898-012-0020-3), MrDIRECT [[12]](https://doi.org/10.1007/s10898-016-0447-z), MrDIRECT075 [[13]](https://doi.org/10.1007/s10898-014-0241-8), BIRECT [[14]](https://doi.org/10.1007/s10898-016-0485-6), GB-DISIMPL-C [[15]](https://doi.org/10.1007/s10898-014-0180-4), GB-DISIMPL-V [[15]](https://doi.org/10.1007/s10898-014-0180-4), Gb-BIRECT [[16]](https://doi.org/10.1016/j.eswa.2019.113052), BIRMIN [[16]](https://doi.org/10.1016/j.eswa.2019.113052), Gb-glbSolve [[16]](https://doi.org/10.1016/j.eswa.2019.113052), DISIMPL-C [[17]](https://doi.org/10.1007/s10898-013-0089-3), DISIMPL-V [[17]](https://doi.org/10.1007/s10898-013-0089-3), ADC [[18]](https://doi.org/10.1137/040621132), Aggressive DIRECT [[19]](%5Bdownload%20(psu.edu)%5D(https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.63.280&rep=rep1&type=pdf)), DIRECT-G [[20]](https://doi.org/10.1007/s11590-017-1228-4), DIRECT-L [[20]](https://doi.org/10.1007/s11590-017-1228-4), DIRECT-GL [[20]](https://doi.org/10.1007/s11590-017-1228-4). |
+| Linearly constrained  | Lc-DISIMPL-C [[21]](https://doi.org/10.1007/s11590-014-0772-4), Lc-DISIMPL-V [[21]](https://doi.org/10.1007/s11590-014-0772-4). |
+| Generally constrained | DIRECT-L1 [[1]](http://www4.ncsu.edu/~ctk/Finkel_Direct/), DIRECT-GLc [[22]](https://doi.org/10.1007/s00158-018-2181-2), DIRECT-GLce [[22]](https://doi.org/10.1007/s00158-018-2181-2), DIRECT-GLce-min [[22]](https://doi.org/10.1007/s00158-018-2181-2). |
+| Hidden constraints    | DIRECT-NAS [[1]](http://www4.ncsu.edu/~ctk/Finkel_Direct/), DIRECT-Barrier [[23]](%5BModification%20of%20the%20DIRECT%20Algorithm%20(ncsu.edu)%5D(https://repository.lib.ncsu.edu/bitstream/handle/1840.16/3920/etd.pdf?sequence=1)), subDIRECT-Barrier [[24]](https://doi.org/10.1016/j.energy.2017.03.047), DIRECT-GLh [[25]](https://doi.org/10.1007/s11590-021-01726-z). |
 
 ## Quick user guide
 
@@ -134,7 +148,7 @@ Any DIRECT-type algorithmic implementation for constrained global optimization p
 
 ```matlab
 function y = G06(x)                           
-    if nargin == 0			                      % Extract info from the function
+    if nargin == 0			                  % Extract info from the function
         y.nx = 2;                             % Dimension of the problem
         y.ng = 2;                             % Number of g(x) constraints
         y.nh = 0;                             % Number of h(x) constraints
@@ -271,7 +285,7 @@ shuts down the parallel pool.
 
 ## Using Scripts
 
-Four scripts in the folder [Scripts/TOMS](https://github.com/blockchain-group/DIRECTGO/tree/main/Scripts/TOMS) can be used to reproduce results presented in the manuscript: ["DIRECTGO: A new DIRECT-type MATLAB toolbox for derivative-free global optimization"]([ https://doi.org/10.48550/arXiv.2107.02205](https://doi.org/10.48550/arXiv.2107.02205)). The scripts automatically download the required version of **DIRECTGOLib** for experiments.
+Four scripts in the folder [Scripts/TOMS](https://github.com/blockchain-group/DIRECTGO/tree/main/Scripts/TOMS) can be used to reproduce results presented in the manuscript: [DIRECTGO: A new DIRECT-type MATLAB toolbox for derivative-free global optimization](https://doi.org/10.48550/arXiv.2107.02205), which are given in [Results/TOMS](https://github.com/blockchain-group/DIRECTGO/tree/main/Results/TOMS) folder. The scripts automatically download the required version of **DIRECTGOLib** for experiments.
 
 - `SolveBoxProblems.m` - can be used to repeat experiments for box-constrained problems presented in TABLE 3 and 4;
 - `SolveGeneralProblems.m` - can be used to repeat experiments for box-constrained problems presented in TABLE 5;
@@ -280,20 +294,56 @@ Four scripts in the folder [Scripts/TOMS](https://github.com/blockchain-group/DI
 
 ## Citing DIRECTGO
 
-Please use the following bibtex entry, if you consider to cite `DIRECTGO` toolbox:
+Please use the following bibtex entries, if you consider to cite `DIRECTGO` toolbox:
 
 ```latex
-@misc{Stripinis2021:DirectGO,
-  title         = {{DIRECTGO: A new DIRECT-type MATLAB toolbox for derivative-free global optimization}}, 
-  author        = {Linas Stripinis and Remigijus Paulavicius},
-  year          = {2021},
-  eprint        = {2107.02205},
-  archivePrefix = {arXiv},
-  primaryClass  = {math.OC}
+@misc{Stripinis2022:DirectGOv1.0,
+  title        = {{DIRECTGO: A new DIRECT-type MATLAB toolbox for derivative-free global optimization}}, 
+  author       = {Linas Stripinis and Remigijus Paulavi{\v c}ius},
+  year         = {2022},
+  publisher    = {GitHub},
+  version      = {v1.0},
+  howpublished = {\url{https://github.com/blockchain-group/DIRECTGO}},
+}
+
+@misc{Stripinis2022:dgo,
+	title     = {{DIRECTGO: A new DIRECT-type MATLAB toolbox for derivative-free global optimization}}, 
+	author    = {Linas Stripinis and Remigijus Paulavi{\v{c}}ius},
+	year      = {2022},
+	eprint    = {arXiv:2107.02205v2},
+	publisher = {arXiv},
+	url       = {https://arxiv.org/abs/2107.02205}
 }
 ```
 
-## Related resources
+## References
 
-[DIRECTGOLib - DIRECT Global Optimization test problems Library](https://github.com/blockchain-group/DIRECTGOLib)
-
+1. D. E. Finkel. 2004. MATLAB source code for DIRECT. http://www4.ncsu.edu/~ctk/Finkel_Direct/. Online; accessed: 2017-03-22.
+2. D. R. Jones, C. D. Perttunen, and B. E. Stuckman. 1993. Lipschitzian Optimization Without the Lipschitz Constant. Journal of Optimization Theory and Application 79, 1 (1993), 157–181. https://doi.org/10.1007/BF00941892
+3. D. Finkel and C. Kelley. 2004. An Adaptive Restart Implementation of DIRECT. [An adaptive restart implementation of direct (ncsu.edu)](https://repository.lib.ncsu.edu/handle/1840.4/461) In Technical report CRSC-TR04-30. Center for Research in Scientific Computation, North Carolina State University, Raleigh, 1–16.
+4. D. E. Finkel and C. T. Kelley. 2006. Additive scaling and the DIRECT algorithm. Journal of Global Optimization 36, 4 (2006), 597–608. [https://doi.org/10.1007/s10898-006-9029-9]( https://doi.org/10.1007/s10898-006-9029-9)
+5. J. M. Gablonsky and C. T. Kelley. 2001. A locally-biased form of the DIRECT algorithm. Journal of Global Optimization 21, 1 (2001), 27–37. https://doi.org/10.1023/A:1017930332101
+6. D. R. Jones. 2001. The Direct Global Optimization Algorithm. http://www4.ncsu.edu/~ctk/Finkel_Direct/. In The Encyclopedia of Optimization, Christodoulos A. Floudas and Panos M. Pardalos (Eds.). Kluwer Academic Publishers, Dordrect, 431–440.
+7. Qunfeng Liu. 2013. Linear scaling and the DIRECT algorithm. Journal of Global Optimization 56 (2013), 1233–1245. Issue 3. https://doi.org/10.1007/s10898-012-9952-x
+8. G. Liuzzi, S. Lucidi, and V. Piccialli. 2010. A DIRECT-based approach exploiting local minimizations for the solution of large-scale global optimization problems. Computational Optimization and Applications 45 (2010), 353–375. Issue 2. https://doi.org/10.1007/s10589-008-9217-2
+9. Jonas Mockus, Remigijus Paulavičius, Dainius Rusakevičius, Dmitrij Šešok, and Julius Žilinskas. 2017. Application of Reduced-set Pareto-Lipschitzian Optimization to truss optimization. Journal of Global Optimization 67, 1-2 (2017), 425–450. https://doi.org/10.1007/s10898-015-0364-6
+10. Mattias Björkman and Kenneth Holmström. 1999. Global Optimization Using the DIRECT Algorithm in Matlab. https://www.mat.univie.ac.at/~neum/glopt/mss/BjoeH99.pdf. Advanced Modeling and Optimization 1, 2 (1999), 17–37.
+11. Ratko Grbić, Emmanuel Karlo Nyarko, and Rudolf Scitovski. 2013. A modification of the direct method for Lipschitz global optimizatio n for a symmetric function. Journal of Global Optimization 57, 4 (2013), 1193–1212. https://doi.org/10.1007/s10898-012-0020-3
+12. Qunfeng Liu, Guang Yang, Zhongzhi Zhang, and Jinping Zeng. 2017. Improving the convergence rate of the DIRECT global optimization algorithm. Journal of Global Optimization 67, 4 (2017), 851–872. https://doi.org/10.1007/s10898-016-0447-z 
+13. Qunfeng Liu, Jinping Zeng, and Gang Yang. 2015. MrDIRECT: a multilevel robust DIRECT algorithm for global optimization problems. Journal of Global Optimization 62, 2 (2015), 205–227. https://doi.org/10.1007/s10898-014-0241-8
+14. Remigijus Paulavičius, Lakhdar Chiter, and Julius Žilinskas. 2018. Global optimization based on bisection of rectangles, function values at diagonals, and a set of Lipschitz constants. Journal of Global Optimization 71, 1 (2018), 5–20. https://doi.org/10.1007/s10898-016-0485-6
+15. Remigijus Paulavičius, Ya. D. Sergeyev, Dmitri E. Kvasov, and Julius Žilinskas. 2014. Globally-biased DISIMPL algorithm for expensive global optimization. Journal of Global Optimization 59, 2-3 (2014), 545–567. https://doi.org/10.1007/s10898-014-0180-4
+16. Remigijus Paulavičius, Ya. D. Sergeyev, Dmitri E. Kvasov, and Julius Žilinskas. 2020. Globally-biased BIRECT algorithm with local accelerators for expensive global optimization. Expert Systems with Applications 144 (2020), 11305. https://doi.org/10.1016/j.eswa.2019.113052
+17. Remigijus Paulavičius and Julius Žilinskas. 2013. Simplicial Lipschitz optimization without the Lipschitz constant. Journal of Global Optimization 59, 1 (2013), 23–40. https://doi.org/10.1007/s10898-013-0089-3
+18. Ya. D. Sergeyev and Dmitri E. Kvasov. 2006. Global search based on diagonal partitions and a set of Lipschitz constants. SIAM Journal on Optimization 16, 3 (2006), 910–937. https://doi.org/10.1137/040621132
+19. Chuck A. Baker, Layne T. Watson, Bernard Grossman, William H. Mason, and Raphael T. Haftka. 2001. [Parallel Global Aircraft Configuration Design Space Exploration]([download (psu.edu)](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.63.280&rep=rep1&type=pdf)). Nova Science Publishers, Inc., USA, 79–96.
+20. Linas Stripinis, Remigijus Paulavičius, and Julius Žilinskas. 2018. Improved scheme for selection of potentially optimal hyper-rectangles in DIRECT. Optimization Letters 12, 7 (2018), 1699–1712. https://doi.org/10.1007/s11590-017-1228-4
+21. Remigijus Paulavičius and Julius Žilinskas. 2016. Advantages of simplicial partitioning for Lipschitz optimization problems with linear constraints. Optimization Letters 10, 2 (2016), 237–246. https://doi.org/10.1007/s11590-014-0772-4
+22. Linas Stripinis, Remigijus Paulavičius, and Julius Žilinskas. 2019. Penalty functions and two-step selection procedure based DIRECT-type algorithm for constrained global optimization. Structural and Multidisciplinary Optimization 59, 6 (2019), 2155–2175. https://doi.org/10.1007/s00158-018-2181-2
+23. J. M. Gablonsky. 2001. [Modifications of the DIRECT Algorithm]([Modification of the DIRECT Algorithm (ncsu.edu)](https://repository.lib.ncsu.edu/bitstream/handle/1840.16/3920/etd.pdf?sequence=1)). Ph.D. Dissertation. North Carolina State University.
+24. Jonggeol Na, Youngsub Lim, and Chonghun Han. 2017. A modified DIRECT algorithm for hidden constraints in an LNG process optimization. Energy 126 (2017), 488–500. https://doi.org/10.1016/j.energy.2017.03.047
+25. Linas Stripinis and Remigijus Paulavičius. 2021. A new DIRECT-GLh algorithm for global optimization with hidden constraints. Optimization Letters 15, 6 (2021), 1865–1884. https://doi.org/10.1007/s11590-021-01726-z
+26. Jian He, Layne T. Watson, Naren Ramakrishnan, Clifford A. Shaffer, Alex Verstak, Jing Jiang, Kyung Bae, and William H. Tranter. 2002. Dynamic Data Structures for a DIRECT Search Algorithm. Computational Optimization and Applications 23, 1 (2002), 5–25. https://doi.org/10.1023/A:1019992822938
+27. Linas Stripinis, Julius Žilinskas, Leocadio G. Casado, and Remigijus Paulavičius. 2021. On MATLAB experience in accelerating DIRECT-GLce algorithm for constrained global optimization through dynamic data structures and parallelization. Appl. Math. Comput. 390 (2021), 1–17. https://doi.org/10.1016/j.amc.2020.125596
+28. Linas Stripinis and Remigijus Paulavičius. 2022. DIRECTGOLib - DIRECT Global Optimization test problems Library. https://doi.org/10.5281/zenodo.6491863
+29. Stripinis, L., Paulavičius, R.: DIRECTGO: A new DIRECT-type MATLAB toolbox for derivative-free global optimization (2022). URL https://arxiv.org/abs/2107.02205
