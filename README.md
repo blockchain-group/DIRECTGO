@@ -7,24 +7,28 @@
 
 The sequential [[1](http://www4.ncsu.edu/~ctk/Finkel_Direct/), [26](https://doi.org/10.1023/A:1019992822938), [27](https://doi.org/10.1016/j.amc.2020.125596)] and parallel implementations [[27]](https://doi.org/10.1016/j.amc.2020.125596) of various DIRECT-type algorithms. The toolbox consists of two main parts:
 
-- **DIRECTGO.mltbx** - `MATLAB` toolbox package containing implementations of DIRECT-type algorithms, including an extensive DIRECTGOLib [[28]](https://github.com/blockchain-group/DIRECTGOLib) library (maintained separetely) of the box, generally constrained, and practical engineering global optimization problems, often used for benchmarking DIRECT-type algorithms.
+- **DIRECTGO.mltbx** - `MATLAB` toolbox package containing implementations of DIRECT-type algorithms, including an extensive [DIRECTGOLib](https://github.com/blockchain-group/DIRECTGOLib) [[28]](https://github.com/blockchain-group/DIRECTGOLib) library (maintained separetely) of the box, generally constrained, and practical engineering global optimization problems, often used for benchmarking DIRECT-type algorithms.
 - **DIRECTGO.mlappinstall** - A single `MATLAB` app installer ﬁle containing everything necessary to install and run the **DIRECTGO** toolbox, including a graphical user interface (GUI).
 
 Additionally, we provide source files of all implemented algorithms in [Algorithms/](Algorithms/) folder.
 
-DIRECTGO v1.0 version presented in [[29]](https://arxiv.org/abs/2107.02205) implements 36 different DIRECT-type algorithms.
+## Versions history
 
-## Algorithms within toolbox
+- **DIRECTGO** [v1.0.0](https://github.com/blockchain-group/DIRECTGO/releases/tag/v1.0.0) version presented in [[29]](https://arxiv.org/abs/2107.02205) implements 36 different DIRECT-type algorithms.
+- Twelve new algorithms, presented in [[30]](https://arxiv.org/abs/2109.14912), are included in **DIRECTGO** [v1.1.0](https://github.com/blockchain-group/DIRECTGO/releases/tag/v1.1.0) (48 algorithms in total)
 
-Classification (based on the type of constraints) of implemented DIRECT-type algorithms within the toolbox:
+## Algorithms within DIRECTGO
+
+Classification of 48 implemented DIRECT-type algorithms included in different versions of **DIRECTGO**:
 
 
-| Problem type          | Algorithm name & [References]                                |
-| --------------------- | ------------------------------------------------------------ |
-| Box constrained       | DIRECT v4.0 [[1](http://www4.ncsu.edu/~ctk/Finkel_Direct/), [2](https://doi.org/10.1007/BF00941892)], DIRECT-restart [[3]](https://repository.lib.ncsu.edu/handle/1840.4/461), DIRECT-m [[4]]( https://doi.org/10.1007/s10898-006-9029-9), DIRECT-l [[5]](https://doi.org/10.1023/A:1017930332101), DIRECT-rev [[6]](http://www4.ncsu.edu/~ctk/Finkel_Direct/), DIRECT-a [[7]](https://doi.org/10.1007/s10898-012-9952-x), DIRMIN [[8]](https://doi.org/10.1007/s10589-008-9217-2), PLOR [[9]](https://doi.org/10.1007/s10898-015-0364-6), glbSolve [[2](https://doi.org/10.1007/BF00941892), [10](https://www.mat.univie.ac.at/~neum/glopt/mss/BjoeH99.pdf)], glbSolve-sym [[11]](https://doi.org/10.1007/s10898-012-0020-3), glbSolve-sym2 [[11]](https://doi.org/10.1007/s10898-012-0020-3), MrDIRECT [[12]](https://doi.org/10.1007/s10898-016-0447-z), MrDIRECT075 [[13]](https://doi.org/10.1007/s10898-014-0241-8), BIRECT [[14]](https://doi.org/10.1007/s10898-016-0485-6), GB-DISIMPL-C [[15]](https://doi.org/10.1007/s10898-014-0180-4), GB-DISIMPL-V [[15]](https://doi.org/10.1007/s10898-014-0180-4), Gb-BIRECT [[16]](https://doi.org/10.1016/j.eswa.2019.113052), BIRMIN [[16]](https://doi.org/10.1016/j.eswa.2019.113052), Gb-glbSolve [[16]](https://doi.org/10.1016/j.eswa.2019.113052), DISIMPL-C [[17]](https://doi.org/10.1007/s10898-013-0089-3), DISIMPL-V [[17]](https://doi.org/10.1007/s10898-013-0089-3), ADC [[18]](https://doi.org/10.1137/040621132), Aggressive DIRECT [[19]](%5Bdownload%20(psu.edu)%5D(https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.63.280&rep=rep1&type=pdf)), DIRECT-G [[20]](https://doi.org/10.1007/s11590-017-1228-4), DIRECT-L [[20]](https://doi.org/10.1007/s11590-017-1228-4), DIRECT-GL [[20]](https://doi.org/10.1007/s11590-017-1228-4). |
-| Linearly constrained  | Lc-DISIMPL-C [[21]](https://doi.org/10.1007/s11590-014-0772-4), Lc-DISIMPL-V [[21]](https://doi.org/10.1007/s11590-014-0772-4). |
-| Generally constrained | DIRECT-L1 [[1]](http://www4.ncsu.edu/~ctk/Finkel_Direct/), DIRECT-GLc [[22]](https://doi.org/10.1007/s00158-018-2181-2), DIRECT-GLce [[22]](https://doi.org/10.1007/s00158-018-2181-2), DIRECT-GLce-min [[22]](https://doi.org/10.1007/s00158-018-2181-2). |
-| Hidden constraints    | DIRECT-NAS [[1]](http://www4.ncsu.edu/~ctk/Finkel_Direct/), DIRECT-Barrier [[23]](%5BModification%20of%20the%20DIRECT%20Algorithm%20(ncsu.edu)%5D(https://repository.lib.ncsu.edu/bitstream/handle/1840.16/3920/etd.pdf?sequence=1)), subDIRECT-Barrier [[24]](https://doi.org/10.1016/j.energy.2017.03.047), DIRECT-GLh [[25]](https://doi.org/10.1007/s11590-021-01726-z). |
+| Version                                                      | Problem type          | Algorithm name & [References]                                |
+| ------------------------------------------------------------ | --------------------- | ------------------------------------------------------------ |
+| [v1.0.0](https://github.com/blockchain-group/DIRECTGO/releases/tag/v1.0.0) | Box constrained       | DIRECT v4.0 [[1](http://www4.ncsu.edu/~ctk/Finkel_Direct/), [2](https://doi.org/10.1007/BF00941892)], DIRECT-restart [[3]](https://repository.lib.ncsu.edu/handle/1840.4/461), DIRECT-m [[4]]( https://doi.org/10.1007/s10898-006-9029-9), DIRECT-l [[5]](https://doi.org/10.1023/A:1017930332101), DIRECT-rev [[6]](http://www4.ncsu.edu/~ctk/Finkel_Direct/), DIRECT-a [[7]](https://doi.org/10.1007/s10898-012-9952-x), DIRMIN [[8]](https://doi.org/10.1007/s10589-008-9217-2), PLOR [[9]](https://doi.org/10.1007/s10898-015-0364-6), glbSolve [[2](https://doi.org/10.1007/BF00941892), [10](https://www.mat.univie.ac.at/~neum/glopt/mss/BjoeH99.pdf)], glbSolve-sym [[11]](https://doi.org/10.1007/s10898-012-0020-3), glbSolve-sym2 [[11]](https://doi.org/10.1007/s10898-012-0020-3), MrDIRECT [[12]](https://doi.org/10.1007/s10898-016-0447-z), MrDIRECT075 [[13]](https://doi.org/10.1007/s10898-014-0241-8), BIRECT [[14]](https://doi.org/10.1007/s10898-016-0485-6), GB-DISIMPL-C [[15]](https://doi.org/10.1007/s10898-014-0180-4), GB-DISIMPL-V [[15]](https://doi.org/10.1007/s10898-014-0180-4), Gb-BIRECT [[16]](https://doi.org/10.1016/j.eswa.2019.113052), BIRMIN [[16]](https://doi.org/10.1016/j.eswa.2019.113052), Gb-glbSolve [[16]](https://doi.org/10.1016/j.eswa.2019.113052), DISIMPL-C [[17]](https://doi.org/10.1007/s10898-013-0089-3), DISIMPL-V [[17]](https://doi.org/10.1007/s10898-013-0089-3), ADC [[18]](https://doi.org/10.1137/040621132), Aggressive DIRECT [[19]](%5Bdownload%20(psu.edu)%5D(https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.63.280&rep=rep1&type=pdf)), DIRECT-G [[20]](https://doi.org/10.1007/s11590-017-1228-4), DIRECT-L [[20]](https://doi.org/10.1007/s11590-017-1228-4), DIRECT-GL [[20]](https://doi.org/10.1007/s11590-017-1228-4). |
+| [v1.1.0](https://github.com/blockchain-group/DIRECTGO/releases/tag/v1.1.0) | Box constrained       | I_DBDP_GL [[30]](https://arxiv.org/abs/2109.14912), I_DBDP_IA [[30]](https://arxiv.org/abs/2109.14912), I_DBDP_IO [[30]](https://arxiv.org/abs/2109.14912), I_DTC_GL [[30]](https://arxiv.org/abs/2109.14912), I_DTC_IA [[30]](https://arxiv.org/abs/2109.14912), I_DTC_IO [[30]](https://arxiv.org/abs/2109.14912), I_DTDV_IA [[30]](https://arxiv.org/abs/2109.14912), I_DTDV_GL [[30]](https://arxiv.org/abs/2109.14912), I_DTDV_IO [[30]](https://arxiv.org/abs/2109.14912), N_DTC_GL [[30]](https://arxiv.org/abs/2109.14912), N_DTC_IA [[30]](https://arxiv.org/abs/2109.14912), N_DTC_IO [[30]](https://arxiv.org/abs/2109.14912). |
+| [v1.0.0](https://github.com/blockchain-group/DIRECTGO/releases/tag/v1.0.0) | Linearly constrained  | Lc-DISIMPL-C [[21]](https://doi.org/10.1007/s11590-014-0772-4), Lc-DISIMPL-V [[21]](https://doi.org/10.1007/s11590-014-0772-4). |
+| [v1.0.0](https://github.com/blockchain-group/DIRECTGO/releases/tag/v1.0.0) | Generally constrained | DIRECT-L1 [[1]](http://www4.ncsu.edu/~ctk/Finkel_Direct/), DIRECT-GLc [[22]](https://doi.org/10.1007/s00158-018-2181-2), DIRECT-GLce [[22]](https://doi.org/10.1007/s00158-018-2181-2), DIRECT-GLce-min [[22]](https://doi.org/10.1007/s00158-018-2181-2). |
+| [v1.0.0](https://github.com/blockchain-group/DIRECTGO/releases/tag/v1.0.0) | Hidden constraints    | DIRECT-NAS [[1]](http://www4.ncsu.edu/~ctk/Finkel_Direct/), DIRECT-Barrier [[23]](%5BModification%20of%20the%20DIRECT%20Algorithm%20(ncsu.edu)%5D(https://repository.lib.ncsu.edu/bitstream/handle/1840.16/3920/etd.pdf?sequence=1)), subDIRECT-Barrier [[24]](https://doi.org/10.1016/j.energy.2017.03.047), DIRECT-GLh [[25]](https://doi.org/10.1007/s11590-021-01726-z). |
 
 ## Quick user guide
 
@@ -285,12 +289,20 @@ shuts down the parallel pool.
 
 ## Using Scripts
 
-Four scripts in the folder [Scripts/TOMS](https://github.com/blockchain-group/DIRECTGO/tree/main/Scripts/TOMS) can be used to reproduce results presented in the manuscript: [DIRECTGO: A new DIRECT-type MATLAB toolbox for derivative-free global optimization](https://doi.org/10.48550/arXiv.2107.02205), which are given in [Results/TOMS](https://github.com/blockchain-group/DIRECTGO/tree/main/Results/TOMS) folder. The scripts automatically download the required version of **DIRECTGOLib** for experiments.
+### Reproducing results from [[29]](https://doi.org/10.48550/arXiv.2107.02205)
 
-- `SolveBoxProblems.m` - can be used to repeat experiments for box-constrained problems presented in TABLE 3 and 4;
-- `SolveGeneralProblems.m` - can be used to repeat experiments for box-constrained problems presented in TABLE 5;
-- `SolveGeneralPracticalProblems.m` - can be used to repeat experiments for box-constrained problems presented in TABLE 6-10;
-- `SolveBoxPracticalProblems.m` - can be used to repeat experiments for box-constrained problems presented in TABLE 11 and 12.
+Four scripts in the folder [Scripts/TOMS](https://github.com/blockchain-group/DIRECTGO/tree/main/Scripts/TOMS) can be used to reproduce results presented in the manuscript: [DIRECTGO: A new DIRECT-type MATLAB toolbox for derivative-free global optimization](https://doi.org/10.48550/arXiv.2107.02205), and given in [Results/TOMS](https://github.com/blockchain-group/DIRECTGO/tree/main/Results/TOMS) folder. The scripts automatically download the required version of [DIRECTGOLib](https://github.com/blockchain-group/DIRECTGOLib) for experiments.
+
+- `SolveBoxProblems.m` - can be used to repeat experiments for box-constrained problems presented in TABLE 3 and 4 [[29]](https://doi.org/10.48550/arXiv.2107.02205);
+- `SolveGeneralProblems.m` - can be used to repeat experiments for box-constrained problems presented in TABLE 5 [[29]](https://doi.org/10.48550/arXiv.2107.02205);
+- `SolveGeneralPracticalProblems.m` - can be used to repeat experiments for box-constrained problems presented in TABLE 6-10 [[29]](https://doi.org/10.48550/arXiv.2107.02205);
+- `SolveBoxPracticalProblems.m` - can be used to repeat experiments for box-constrained problems presented in TABLE 11 and 12 [[29]](https://doi.org/10.48550/arXiv.2107.02205).
+
+### Reproducing results from [[30]](https://arxiv.org/abs/2109.14912)
+
+The script in the folder [Scripts/JOGO](https://github.com/blockchain-group/DIRECTGO/tree/main/Scripts/JOGO) can be used to reproduce results presented in the manuscript: [An empirical study of various candidate selection and partitioning techniques in the DIRECT framework](https://arxiv.org/abs/2109.14912) and given in [Results/JOGO](https://github.com/blockchain-group/DIRECTGO/tree/main/Results/JOGO) folder. The scripts automatically download the required version of [DIRECTGOLib](https://github.com/blockchain-group/DIRECTGOLib) for experiments.
+
+- `SolveDIRECTGOlib.m` - can be used to repeat experiments presented in TABLE 2 [[30]](https://arxiv.org/abs/2109.14912).
 
 ## Citing DIRECTGO
 
@@ -347,3 +359,4 @@ Please use the following bibtex entries, if you consider to cite `DIRECTGO` tool
 27. Linas Stripinis, Julius Žilinskas, Leocadio G. Casado, and Remigijus Paulavičius. 2021. On MATLAB experience in accelerating DIRECT-GLce algorithm for constrained global optimization through dynamic data structures and parallelization. Appl. Math. Comput. 390 (2021), 1–17. https://doi.org/10.1016/j.amc.2020.125596
 28. Linas Stripinis and Remigijus Paulavičius. 2022. DIRECTGOLib - DIRECT Global Optimization test problems Library. https://doi.org/10.5281/zenodo.6491863
 29. Stripinis, L., Paulavičius, R.: DIRECTGO: A new DIRECT-type MATLAB toolbox for derivative-free global optimization (2022). URL https://arxiv.org/abs/2107.02205
+30. Stripinis, L., Paulavičius, R.: An empirical study of various candidate selection and partitioning techniques in the DIRECT framework. arXiv (2021). https://doi.org/10.48550/ARXIV.2109.14912. https://arxiv.org/abs/2109.14912
