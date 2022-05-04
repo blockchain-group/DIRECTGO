@@ -304,6 +304,12 @@ The script in the folder [Scripts/JOGO](https://github.com/blockchain-group/DIRE
 
 - `SolveDIRECTGOlib.m` - can be used to repeat experiments presented in TABLE 2 [[30]](https://arxiv.org/abs/2109.14912).
 
+### Reproducing HALRECT results
+
+The script in the folder [Scripts/COA](https://github.com/blockchain-group/DIRECTGO/tree/main/Scripts/COA) can be used to reproduce results presented in the manuscript: *"Lipschitz-inspired HALRECT Algorithm for Derivative-free Global Optimization"* and given in [Results/COA](https://github.com/blockchain-group/DIRECTGO/tree/main/Results/COA) folder. The scripts automatically download the required version of [DIRECTGOLib](https://github.com/blockchain-group/DIRECTGOLib) for experiments.
+
+- `SolveHALRECT.m` - can be used to repeat experiments presented in TABLE 3, 4 and FIGURE 10.
+
 ## Citing DIRECTGO
 
 Please use the following bibtex entries, if you consider to cite `DIRECTGO` toolbox:
