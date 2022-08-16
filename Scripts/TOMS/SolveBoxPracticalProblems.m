@@ -7,44 +7,28 @@
 % Created on: 04/20/2022
 %
 % Purpose 
-% This code is prepared for minimization of six practical problems with
-% box constraints.
+% Loops only through those problems that have been identified in the 
+% article [1]
 %
 % Source 
-% Stripinis, L., Paulavicius, R.: DIRECTGO: A new DIRECT-type MATLAB toolbox
-% for derivative-free global optimization (2022)
+% [1] Stripinis, L., Paulavicius, R.: DIRECTGO: A new DIRECT-type MATLAB 
+% toolbox for derivative-free global optimization. ACM Transactions on 
+% Mathematical Software (2022)
 %
 % OUTPUTS
 % SolveBoxPracticalProblems_results.mat
 %--------------------------------------------------------------------------
-
-% Download DIRECTGOLib v1.0
-% Stripinis, L., Paulavicius, R.: DIRECTGOLib - DIRECT Global Optimization 
-% test problems Library. Zenodo (2022). doi.org/10.5281/zenodo.6491863
+% Download the most recent version of DIRECTGOLib from https://github.com/blockchain-group/DIRECTGOLib
 % -------------------------------------------------------------------------
-if not(isfolder('DIRECTGOLib-1.0'))
-    fullURL = 'https://github.com/blockchain-group/DIRECTGOLib/archive/refs/tags/v1.0.zip';
+if not(isfolder('DIRECTGOLib-main'))
+    fullURL = 'https://github.com/blockchain-group/DIRECTGOLib/archive/refs/heads/main.zip';
     filename = 'DIRECTGOLib.zip';
     websave(filename, fullURL);
-    unzip('DIRECTGOLib.zip');
+    unzip('DIRECTGOLib.zip'); 
 end
-parts = strsplit(pwd, filesep); parts{end + 1} = 'DIRECTGOLib-1.0'; 
+parts = strsplit(pwd, filesep); parts{end + 1} = 'DIRECTGOLib-main'; 
 parts{end + 1} = 'Engineering'; 
 parent_path = strjoin(parts(1:end), filesep); addpath(parent_path); 
-
-% Download newest version of DIRECTGOLib
-% Stripinis, L., Paulavicius, R.: DIRECTGOLib - DIRECT Global Optimization 
-% test problems Library. Zenodo (2022). doi.org/10.5281/zenodo.6491951
-% -------------------------------------------------------------------------
-% if not(isfolder('DIRECTGOLib-main'))
-%     fullURL = 'https://github.com/blockchain-group/DIRECTGOLib/archive/refs/heads/main.zip';
-%     filename = 'DIRECTGOLib.zip';
-%     websave(filename, fullURL);
-%     unzip('DIRECTGOLib.zip'); 
-% end
-% parts = strsplit(pwd, filesep); parts{end + 1} = 'DIRECTGOLib-main'; 
-% parts{end + 1} = 'Engineering'; 
-% parent_path = strjoin(parts(1:end), filesep); addpath(parent_path); 
 
 % Load path:
 % -------------------------------------------------------------------------
