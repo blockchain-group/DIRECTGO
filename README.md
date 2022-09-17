@@ -3,14 +3,14 @@
 
 ---
 
-## Quick overview
+## Quick Overview
 
 The sequential [[1](http://www4.ncsu.edu/~ctk/Finkel_Direct/), [26](https://doi.org/10.1023/A:1019992822938), [27](https://doi.org/10.1016/j.amc.2020.125596)] and parallel implementations [[27]](https://doi.org/10.1016/j.amc.2020.125596) of various DIRECT-type algorithms. The toolbox consists of two main parts:
 
-- **DIRECTGO.mltbx** - `MATLAB` toolbox package containing implementations of DIRECT-type algorithms, including an extensive [DIRECTGOLib](https://github.com/blockchain-group/DIRECTGOLib) [[28]](https://github.com/blockchain-group/DIRECTGOLib) library (maintained separetely) of the box, generally constrained, and practical engineering global optimization problems, often used for benchmarking DIRECT-type algorithms.
+- **DIRECTGO.mltbx** - `MATLAB` toolbox package containing implementations of DIRECT-type algorithms, including an extensive [DIRECTGOLib](https://github.com/blockchain-group/DIRECTGOLib) [[28]](https://github.com/blockchain-group/DIRECTGOLib) library (maintained separately) of the box, generally constrained, and practical engineering global optimization problems, often used for benchmarking DIRECT-type algorithms.
 - **DIRECTGO.mlappinstall** - A single `MATLAB` app installer ﬁle containing everything necessary to install and run the **DIRECTGO** toolbox, including a graphical user interface (GUI).
 
-Additionally, we provide source files of all implemented algorithms in [Algorithms/](Algorithms/) folder.
+Additionally, we provide source files of all implemented algorithms in the [Algorithms/](Algorithms/) folder.
 
 ## Versions history
 
@@ -32,7 +32,7 @@ Classification of 48 implemented DIRECT-type algorithms included in different ve
 
 ## Quick user guide
 
-After installation of the `MATLAB` toolbox (using **DIRECTGO.mltbx**), all implemented DIRECT-type algorithms and test problems can be freely accessed in the command window of `MATLAB`. Unlike using GUI, algorithms from the command line require more programming knowledge, and configurations must be done manually. All algorithms can be run using the same style and syntax:
+After installation of the `MATLAB` toolbox (using **DIRECTGO.mltbx**), all implemented DIRECT-type algorithms and test problems can be freely accessed in the command window of `MATLAB`. Unlike GUI, algorithms from the command line require more programming knowledge, and configurations must be done manually. All algorithms can be run using the same style and syntax:
 
 ```matlab
 1. f_min = algorithm(P);
@@ -42,9 +42,9 @@ After installation of the `MATLAB` toolbox (using **DIRECTGO.mltbx**), all imple
 5. [f_min, x_min, history] = algorithm(P, OPTS, D);
 ```
 
-The left side of the equations specifies the output parameters. After the termination, the algorithm returns the best objective value `f_min`, solution point `x_min`, and history of the algorithmic performance during all iterations `history`. The information presented here is: the iteration number, the total number of objective function evaluations, the current minimal value, and the total execution time.
+The left side of the equations specifies the output parameters. After the termination, the algorithm returns the best objective value `f_min`, solution point `x_min`, and the history of the algorithmic performance during all iterations `history`. The information presented here is the iteration number, the total number of objective function evaluations, the current minimum value, and the total execution time.
 
-On the right side, the algorithm name `algorithm` and at least one input parameters are needed to specify. The first one is the problem structure `P` consisting of an objective function:
+On the right side, the algorithm name `algorithm` and at least one input parameter are needed to specify. The first one is the problem structure `P` consisting of an objective function:
 
 ```matlab
 >> P.f = 'objfun';
@@ -56,20 +56,20 @@ If the problem involves additional constraints, they also must be specified:
 >> P.constraint = 'confun';
 ```
 
-The second parameter is an optional variable `OPTS` to customize the default settings. The last parameter is the bound constraints for each dimension/variable:
+The second parameter is an optional variable, `OPTS` to customize the default settings. The last parameter is the bound constraints for each dimension/variable:
 
 ```matlab
 D (i,1) ≤ x_i ≤ D (i,2), i = 1...n;
 ```
 
-The latter `D` parameter is necessary for the algorithm, but can be passed to it in other ways.
+The parameter `D` is necessary for the algorithm but can be passed to it in other ways.
 
 
 ### Example of box constrained global optimization algorithm usage
 
 ---
 
-Any DIRECT-type algorithm in the **DIRECTGO** toolbox can be called in `MATLAB` using the same sequences, which are discussed earlier. Let’s consider the example using the *PLOR* algorithm, solving **Bukin6** test function. Figure 1. (left side) shows the **Bukin6** test function plot over its domain. The function should be defined as:
+Any DIRECT-type algorithm in the **DIRECTGO** toolbox can be called in `MATLAB` using the same sequences discussed earlier. Let’s consider the example using the *PLOR* algorithm, solving the **Bukin6** test function. Figure 1. (left side) shows the **Bukin6** test function plot over its domain. The function should be defined as:
 
 ```matlab
 function y = Bukin6(x)                 % Extract info from the function
@@ -100,9 +100,9 @@ function xmin = get_xmin(~)
 end
 ```
 
-Each test problem in the **DIRECTGOLib** stores the information about the problem structure together with the objective function. In this case, in the `Bukin6.m` file, the following information is stored: i) the dimensionality of the problem; ii) the lower and upper bounds for each variable; iii) the objective function value of the known solution; iv) the solution point.
+Each test problem in the **DIRECTGOLib** stores information about the problem structure together with the objective function. In this case, in the `Bukin6.m` file, the following information is stored: i) the dimensionality of the problem; ii) the lower and upper bounds for each variable; iii) the objective function value of the available solution; iv) the solution point.
 The optimization problem is passed to the algorithm as part of a `P` structure. For a simple, box-constrained problem like this, only one field of the `P` structure is needed:
-For some problems, the optimum might depend on the number of variables, therefore the solution values and points are returned as functions for all test problems in **DIRECTGOLib**.
+For some problems, the optimum might depend on the number of variables. Therefore, the solution values and points are returned as functions for all test problems in **DIRECTGOLib**.
 
 ```matlab
 » P.f = 'Bukin6';
@@ -148,7 +148,7 @@ The convergence plot is shown on the right side of Fig. 1, while the left side i
 
 ---
 
-Any DIRECT-type algorithmic implementation for constrained global optimization problems can be used, following the same principle presented earlier. For constrained problems, implemented algorithms extract additional information from the functions, such as: the number of inequality constraints; the number of equality constraints; and the constraint functions. Let us take the **G06** problem as an example, which is defined in the following way:
+Any DIRECT-type algorithmic implementation for constrained global optimization problems can be used, following the same principle presented earlier. For constrained problems, implemented algorithms extract additional information from the functions, such as the number of inequality constraints, equality constraints, and constraint functions. Let us take the **G06** problem as an example, which is defined in the following way:
 
 ```matlab
 function y = G06(x)                           
@@ -185,7 +185,7 @@ function xmin = get_xmin(~)
 end
 ```
 
-Same as in the previous example the optimization problem is passed to the algorithm as part of a `P` structure. Once again, only one field of the `P` structure is needed:
+As in the previous example, the optimization problem is passed to the algorithm as part of a `P` structure. Once again, only one field of the `P` structure is needed:
 
 ```matlab
 >> P.f = 'G06';
@@ -207,10 +207,10 @@ The desired algorithm can then be run using the following sequence:
 >> [f_min, x_min, history] = dDirect_GLc(P, OPTS);
 ```
 
-Since `opts.showits` has been set to 1 in the `OPTS` structure, the status of each iteration will be printed in the `MATLAB` command window. The *DIRECT-GLc* algorithm used in this example works in two phases. Since the initial sampling points of the `G06` problem do not satisfy the constraints using *DIRECT-GLc*, the algorithm switches to the second phase, which is indicated by the first printed line. In the latter phase, the algorithm searches for at least one point where the constraints are satisfied. When the algorithm finds such a point, it switches to phase one and continues trying to find a better solution using the auxiliary function based approach. The last line prints the reason for stopping the algorithm. Since the solution was found with a 0.01% error, the algorithm stopped at iteration 14 after finding the solution 𝑓min with the value −6901.5099081387.
+Since `opts.showits` has been set to 1 in the `OPTS` structure, the status of each iteration will be printed in the `MATLAB` command window. The *DIRECT-GLc* algorithm used in this example works in two phases. Since the initial sampling points of the `G06` problem do not satisfy the constraints using *DIRECT-GLc*, the algorithm switches to the second phase, which is indicated by the first printed line. In the latter stage, the algorithm searches for at least one point where the constraints are satisfied. When the algorithm finds such a point, it switches to phase one and tries to find a better solution using the auxiliary function-based approach. The last line prints the reason for stopping the algorithm. Since the solution was found with a 0.01% error, the algorithm stopped at iteration 14 after finding the solution 𝑓min with the value −6901.5099081387.
 
 ```
-Phase_II - searching feasible point:
+Phase_II - searching feasible points:
 con viol: 2404.4400000000 fn evals: 5
 con viol: 515.5511111111  fn evals: 7
 ...
@@ -225,7 +225,7 @@ Iter: 14    f_min: -6901.5099081387     time(s): 0.13869     fn evals: 1027
 Minima was found with Tolerance: 1
 ```
 
-Let us consider a different way in which a user can use DIRECT-type algorithms. If the user wants to solve new problems that are not available in **DIRECTGOLib** without defining the functions as described in earlier, this can be done in other ways. Let us take the same `G06` problem as an example. To the structure `P.f`, the name of an m-file which should compute the value of the `G06` objective function must be given.
+Let us consider a different way a user can use DIRECT-type algorithms. If the user wants to solve new problems not available in **DIRECTGOLib** without defining the functions described earlier, this can be done in other ways. Let us take the same `G06` problem as an example. To the structure `P.f`, the name of an m-file, which should compute the value of the `G06` objective function, must be given.
 
 ```matlab
 function y = G06(x)
@@ -233,7 +233,7 @@ function y = G06(x)
 end
 ```
 
-To the structure `P.constraint`, the name of an m-file which should compute the vector of the **G06** constrain functions must be given.
+To the structure, `P.constraint`, the name of an m-file which should compute the vector of the **G06** constrain functions must be given.
 
 ```matlab
 function [c, ceq] = G06c(x)
@@ -256,7 +256,7 @@ The next necessary parameter to be passed is the optimization domain `D`. `G06` 
 >> D = [13, 100; 0, 100];
 ```
 
-The first column should indicate the lower bounds for `x`, and the second column the upper bounds. Next, assume that we going to use the same `OPTS` structure, which we already defined earlier. However, for the algorithm to find a solution with the desired 0.01% error, it needs to specify the solution of the `G06` problem in the `OPTS` structure.
+The first column should indicate the lower bounds for `x`, and the second column the upper bounds. Next, assume that we will use the same `OPTS` structure we already defined earlier. However, for the algorithm to find a solution with the desired 0.01% error, it needs to specify the solution of the `G06` problem in the `OPTS` structure.
 
 ```matlab
 >> opts.globalmin = -6961.81387512; % Known global solution value
@@ -268,18 +268,18 @@ Then, the desired algorithm can be used with the following sequence:
 >> [f_min, x_min, history] = dDirect_GLc(P, OPTS, D);
 ```
 
-This results in the same iterative sequence of the algorithm as in the previous example in this section. The *DIRECT-GLc* algorithm will terminate after 14 iterations and 1027 evaluations of the objective function.
+This results in the same iterative sequence of the algorithm as in the previous example in this section. The *DIRECT-GLc* algorithm will terminate after 14 iterations and 1027 objective function evaluations.
 
 **Parallel algorithm usage**
 
-This section briefly explains how to use parallel versions of the algorithms. Assume a user wishes to use parallel code for the *PLOR* algorithm. First, a parallel implementation of the *PLOR* algorithm `parallel_dPlor.m` should be chosen. Next, a user should specify the number of workers (computational threads). For parallel *PLOR*, it is reasonable to select 2, as only two potential optimal hyper-rectangles are selected per iteration. In this case, `MATLAB` parallel pool size should be specified using the `parpool` command, after which the parallel algorithm should be executed:
+This section briefly explains how to use parallel versions of the algorithms. Assume a user wishes to use parallel code for the *PLOR* algorithm. First, a parallel implementation of the *PLOR* algorithm `parallel_dPlor.m` should be chosen. Next, users should specify the number of workers (computational threads). For parallel *PLOR*, it is reasonable to select 2, as only two potential optimal hyper-rectangles are selected per iteration. In this case, `MATLAB` parallel pool size should be specified using the `parpool` command, after which the parallel algorithm should be executed:
 
 ```matlab
 >> parpool(2);
 >> [f_min, x_min, history] = parallel_dPlor(P, OPTS);
 ```
 
-By default, the `parpool` command starts the `MATLAB` pool on the local machine with one worker per physical CPU core. Using `parpool(2)`, we limit the number of workers to 2. After this, the parallel code is executed using both workers. However, it should be taken into account that creating parallel `parpool` takes some time. Therefore, using the parallel *PLOR* algorithm is inefficient in solving simple problems. The use of parallel codes should address higher-dimensionality, more expensive optimization problems. When all necessary calculations in parallel mode are finished, the following command:
+The `parpool` command default starts the `MATLAB` pool on the local machine with one worker per physical CPU core. Using `parpool(2)`, we limit the number of workers to 2. After this, the parallel code is executed using both workers. However, it should be considered that creating a parallel `parpool` takes some time. Therefore, using the parallel *PLOR* algorithm is inefficient in solving simple problems. Using parallel codes should address higher-dimensionality and more expensive optimization problems. When all necessary calculations in parallel mode are finished, the following command:
 
 ```matlab
 >> delete(gcp);
@@ -300,37 +300,40 @@ Four scripts in the folder [Scripts/TOMS](https://github.com/blockchain-group/DI
 
 ### Reproducing results from [[30]](https://arxiv.org/abs/2109.14912)
 
-The script in the folder [Scripts/JOGO](https://github.com/blockchain-group/DIRECTGO/tree/main/Scripts/JOGO) can be used to reproduce results presented in the manuscript: [An empirical study of various candidate selection and partitioning techniques in the DIRECT framework](https://arxiv.org/abs/2109.14912) and given in [Results/JOGO](https://github.com/blockchain-group/DIRECTGO/tree/main/Results/JOGO) folder. The scripts automatically download the required version of [DIRECTGOLib](https://github.com/blockchain-group/DIRECTGOLib) for experiments.
+The script in the folder [Scripts/JOGO](https://github.com/blockchain-group/DIRECTGO/tree/main/Scripts/JOGO) can be used to reproduce the results presented in the manuscript: [An empirical study of various candidate selection and partitioning techniques in the DIRECT framework](https://arxiv.org/abs/2109.14912) and given in [Results/JOGO](https://github.com/blockchain-group/DIRECTGO/tree/main/Results/JOGO) folder. The scripts automatically download the required version of [DIRECTGOLib](https://github.com/blockchain-group/DIRECTGOLib) for experiments.
 
 - `SolveDIRECTGOlib.m` - can be used to repeat experiments presented in TABLE 2 [[30]](https://arxiv.org/abs/2109.14912).
 
 ### Reproducing HALRECT results
 
-The script in the folder [Scripts/COA](https://github.com/blockchain-group/DIRECTGO/tree/main/Scripts/COA) can be used to reproduce results presented in the manuscript: *"Lipschitz-inspired HALRECT Algorithm for Derivative-free Global Optimization"* and given in [Results/COA](https://github.com/blockchain-group/DIRECTGO/tree/main/Results/COA) folder. The scripts automatically download the required version of [DIRECTGOLib](https://github.com/blockchain-group/DIRECTGOLib) for experiments.
+The script in the folder [Scripts/JOGO2](https://github.com/blockchain-group/DIRECTGO/tree/main/Scripts/JOGO2) can be used to reproduce results presented in the manuscript: *"Lipschitz-inspired HALRECT Algorithm for Derivative-free Global Optimization"* and given in [Results/JOGO2](https://github.com/blockchain-group/DIRECTGO/tree/main/Results/JOGO2) folder. The scripts automatically download the required version of [DIRECTGOLib](https://github.com/blockchain-group/DIRECTGOLib) for experiments.
 
-- `SolveHALRECT.m` - can be used to repeat experiments presented in TABLE 3, 4 and FIGURE 10.
+- `SolveHALRECT.m` - can be used to repeat experiments presented in TABLE 3, 4, and FIGURE 10.
 
 ## Citing DIRECTGO
 
-Please use the following bibtex entries, if you consider to cite `DIRECTGO` toolbox:
+Please use the following BibTeX entries if you consider citing the `DIRECTGO` toolbox:
 
 ```latex
-@misc{Stripinis2022:DirectGOv1.0,
-  title        = {{DIRECTGO: A new DIRECT-type MATLAB toolbox for derivative-free global optimization}}, 
-  author       = {Linas Stripinis and Remigijus Paulavi{\v c}ius},
-  year         = {2022},
-  publisher    = {GitHub},
-  version      = {v1.0},
-  howpublished = {\url{https://github.com/blockchain-group/DIRECTGO}},
+@article{10.1145/3559755,
+    author = {Stripinis, Linas and Paulavi\v{c}ius, Remigijus},
+    title = {DIRECTGO: A New DIRECT-Type MATLAB Toolbox for Derivative-Free     Global Optimization},
+    journal = {ACM Transactions on Mathematical Software},
+    doi = {10.1145/3559755},
+    year = {2022},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    issn = {0098-3500},
+    url = {https://doi.org/10.1145/3559755}
 }
 
-@misc{Stripinis2022:dgo,
-	title     = {{DIRECTGO: A new DIRECT-type MATLAB toolbox for derivative-free global optimization}}, 
-	author    = {Linas Stripinis and Remigijus Paulavi{\v{c}}ius},
-	year      = {2022},
-	eprint    = {arXiv:2107.02205v2},
-	publisher = {arXiv},
-	url       = {https://arxiv.org/abs/2107.02205}
+@misc{Stripinis2022:DirectGOv1.1.0,
+    title        = {{DIRECTGO: A new DIRECT-type MATLAB toolbox for derivative-free global optimization}}, 
+    author       = {Linas Stripinis and Remigijus Paulavi{\v c}ius},
+    year         = {2022},
+    publisher    = {GitHub},
+    version      = {v1.1.0},
+    howpublished = {\url{https://github.com/blockchain-group/DIRECTGO}},
 }
 ```
 
@@ -346,7 +349,7 @@ Please use the following bibtex entries, if you consider to cite `DIRECTGO` tool
 8. G. Liuzzi, S. Lucidi, and V. Piccialli. 2010. A DIRECT-based approach exploiting local minimizations for the solution of large-scale global optimization problems. Computational Optimization and Applications 45 (2010), 353–375. Issue 2. https://doi.org/10.1007/s10589-008-9217-2
 9. Jonas Mockus, Remigijus Paulavičius, Dainius Rusakevičius, Dmitrij Šešok, and Julius Žilinskas. 2017. Application of Reduced-set Pareto-Lipschitzian Optimization to truss optimization. Journal of Global Optimization 67, 1-2 (2017), 425–450. https://doi.org/10.1007/s10898-015-0364-6
 10. Mattias Björkman and Kenneth Holmström. 1999. Global Optimization Using the DIRECT Algorithm in Matlab. https://www.mat.univie.ac.at/~neum/glopt/mss/BjoeH99.pdf. Advanced Modeling and Optimization 1, 2 (1999), 17–37.
-11. Ratko Grbić, Emmanuel Karlo Nyarko, and Rudolf Scitovski. 2013. A modification of the direct method for Lipschitz global optimizatio n for a symmetric function. Journal of Global Optimization 57, 4 (2013), 1193–1212. https://doi.org/10.1007/s10898-012-0020-3
+11. Ratko Grbić, Emmanuel Karlo Nyarko, and Rudolf Scitovski. 2013. A modification of the direct method for Lipschitz global optimization for a symmetric function. Journal of Global Optimization 57, 4 (2013), 1193–1212. https://doi.org/10.1007/s10898-012-0020-3
 12. Qunfeng Liu, Guang Yang, Zhongzhi Zhang, and Jinping Zeng. 2017. Improving the convergence rate of the DIRECT global optimization algorithm. Journal of Global Optimization 67, 4 (2017), 851–872. https://doi.org/10.1007/s10898-016-0447-z 
 13. Qunfeng Liu, Jinping Zeng, and Gang Yang. 2015. MrDIRECT: a multilevel robust DIRECT algorithm for global optimization problems. Journal of Global Optimization 62, 2 (2015), 205–227. https://doi.org/10.1007/s10898-014-0241-8
 14. Remigijus Paulavičius, Lakhdar Chiter, and Julius Žilinskas. 2018. Global optimization based on bisection of rectangles, function values at diagonals, and a set of Lipschitz constants. Journal of Global Optimization 71, 1 (2018), 5–20. https://doi.org/10.1007/s10898-016-0485-6

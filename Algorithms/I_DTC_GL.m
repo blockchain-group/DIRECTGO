@@ -3,7 +3,7 @@ function [minima, xatmin, history] = I_DTC_GL(Problem, opts, bounds)
 % Function   : I_DTC_GL
 % Author 1   : Linas Stripinis          (linas.stripinis@mif.vu.lt)
 % Author 2   : Remigijus Paualvicius    (remigijus.paulavicius@mif.vu.lt)
-% Created on : 03/17/2020
+% Created on : 09/07/2022
 % Purpose    : DIRECT optimization algorithm for box constraints.
 %--------------------------------------------------------------------------
 % [minima, xatmin, history] = I_DTC_GL(Problem, opts, bounds)
@@ -27,6 +27,11 @@ function [minima, xatmin, history] = I_DTC_GL(Problem, opts, bounds)
 %                 opts.dimension = problem dimension
 %                 opts.showits   = 1 print iteration status
 %                 opts.ep        = global/local weight parameter
+%                 opts.locbalance = balance local selection:'GL'(default), 
+%                                   'gb', 'rev'
+%                 opts.ovexpl    = protect search from over-exploration: 
+%                                  'GL'(default), 'min', 'median', 
+%                                  'average', 'limit'
 %                 opts.tol       = tolerance for termination if
 %                                  testflag = 1
 %
@@ -56,6 +61,15 @@ function [minima, xatmin, history] = I_DTC_GL(Problem, opts, bounds)
 % Jones, D.R.: Direct global optimization algorithm. In: Floudas, C.A., 
 % Pardalos, P.M. (Eds.) Encyclopedia of Optimization, pp. 431–440. 
 % Springer, Boston (2001). https://doi.org/10.1007/0-306-48332-7_93
+%
+% Stripinis, L., Paulavicius, R., Zilinskas, J. "Penalty functions and 
+% two-step selection procedure based DIRECT-type algorithm for constrained 
+% global optimization". Structural and Multidisciplinary Optimization 2019, 
+% 59, 2155–2175. DOI 10.1007/s00158-018-2181-2.
+% 
+% Stripinis, L., Paulavicius, R. "An empirical study of various candidate 
+% selection and partitioning techniques in the DIRECT framework". Journal 
+% of Global Optimization 2022. DOI 10.1007/s10898-022-01185-5.
 %--------------------------------------------------------------------------
 if nargin == 2, bounds = []; end
 if nargin == 1, bounds = []; opts = []; end
@@ -71,7 +85,7 @@ if nargin == 1, bounds = []; opts = []; end
 
 while VAL.perror > OPTI.TOL                                 % Main loop
     % Selection of potential optimal hyper-rectangles step
-    POH = Selection(VAL, MSS, Xmin);                                 %GL
+    POH = Selection(VAL, MSS, Xmin, OPTI);                             %GL
 
     % Subdivide potential optimalhyper-rectangles
     [MSS, VAL] = Subdivision(VAL, Problem, third, MSS, POH);
@@ -79,7 +93,7 @@ while VAL.perror > OPTI.TOL                                 % Main loop
     % Update minima and check stopping conditions
     [VAL, Fmin, Xmin] = Arewedone(OPTI, VAL, MSS);
 end                                                         % End of while
-
+ 
 % Return value
 minima      = Fmin;
 if OPTI.G_nargout == 2
@@ -99,18 +113,33 @@ return
 % Function  : Selection
 % Purpose   : Selection of potential optimal hyper-rectangles
 %--------------------------------------------------------------------------
-function POH = Selection(VAL, MSS, Xmin)
+function POH = Selection(VAL, MSS, Xmin, OPTI)
 %--------------------------------------------------------------------------
-% Calculate Euclidean Distatnces
-Euclid_dist = sum((Xmin(:, 1) - MSS.CC(:, 1:VAL.I)).^2, 1).^0.5;
-
 % Identify potential optimal hyper-rectangles
-S = Find_pohas(MSS.FF(1:VAL.I), MSS.DD(1:VAL.I), 1:VAL.I);
+S = Find_pohas(MSS.FF(1:VAL.I), MSS.DD(1:VAL.I), 1:VAL.I, VAL, OPTI);
 
-D = Find_pohas(Euclid_dist(1:VAL.I), MSS.DD(1:VAL.I), 1:VAL.I);
+% Calculate Euclidean Distatnces
+switch OPTI.locbalance
+    case 'GL'
+        Euclid_dist = sum((Xmin(:, 1) - MSS.CC(:, 1:VAL.I)).^2, 1).^0.5;
+        D = Find_pohas(Euclid_dist(1:VAL.I), MSS.DD(1:VAL.I), 1:VAL.I, VAL, OPTI);
+    case 'rev'
+        if VAL.fMinNotImpr == 0
+            Euclid_dist = sum((Xmin(:, 1) - MSS.CC(:, 1:VAL.I)).^2, 1).^0.5;
+            D = Find_pohas(Euclid_dist(1:VAL.I), MSS.DD(1:VAL.I), 1:VAL.I, VAL, OPTI);
+        else
+            D = S;
+        end
+    case 'gb'
+        if (VAL.fMinNotImpr > 5) && (mod(VAL.fMinNotImpr, 5) ~= 0)
+            Euclid_dist = sum((Xmin(:, 1) - MSS.CC(:, 1:VAL.I)).^2, 1).^0.5;
+            D = Find_pohas(Euclid_dist(1:VAL.I), MSS.DD(1:VAL.I), 1:VAL.I, VAL, OPTI);
+        else
+            D = S;
+        end
+end
 
 % Find unique set of potential optimal hyper-rectangles
-
 D(ismember(D, intersect(D, S))) = [];
 D = sortrows([D; MSS.DD(D)].', 2).';
 S = sortrows([S; MSS.DD(S)].', 2).';
@@ -122,9 +151,45 @@ return
 % Function:   Find_poh
 % Purpose   : Return list of PO hyperrectangles
 %--------------------------------------------------------------------------
-function boxes = Find_pohas(fc, szes, indexs)
+function boxes = Find_pohas(fc, szes, indexs, VAL, OPTI)
 %--------------------------------------------------------------------------
-C     = unique(szes);
+C = unique(szes);
+
+switch OPTI.oe
+    case 'limit'
+        C = C(C > VAL.limitas);
+        II = find(fc == min(fc));
+        fminindex = II(find(szes(II) == max(szes(II)), 1, 'last'));
+        minindex = find(C == szes(fminindex), 1);
+        if isempty(minindex)
+            C = sort([szes(fminindex), C]);
+        end
+    case 'min'
+        A = (fc - min(fc) + max(OPTI.ep*abs(min(fc)), 1E-8))./szes;
+        A(A < 0) = 10^10;
+        i_min      = find(A == min(A), 1, "last");
+        if ~isempty(i_min)
+            idx    = find(C == szes(i_min));
+            C      = C(idx:end);
+        end
+    case 'median'
+        A = (fc - min(fc) + max(OPTI.ep*abs(min(fc) - median(fc)), 1E-8))./szes;
+        A(A < 0) = 10^10;
+        i_min      = find(A == min(A), 1, "last");
+        if ~isempty(i_min)
+            idx    = find(C == szes(i_min));
+            C      = C(idx:end);
+        end
+    case 'average'
+        A = (fc - min(fc) + max(OPTI.ep*abs(min(fc) - mean(fc)), 1E-8))./szes;
+        A(A < 0) = 10^10;
+        i_min      = find(A == min(A), 1, "last");
+        if ~isempty(i_min)
+            idx    = find(C == szes(i_min));
+            C      = C(idx:end);
+        end
+end
+
 SMS   = zeros(3, size(C, 2));
 m_set = [fc; szes; indexs];
 for i = 1: size(C, 2)                             % reduce m_set
@@ -168,8 +233,8 @@ if nargin < 3 && isempty(opts)
     opts = [];
 end
 getopts(opts, 'maxits', 1000,'maxevals', 100000, 'maxdeep', 1000,...
-    'testflag', 0, 'tol', 0.01, 'showits', 1, 'dimension', 1, 'ep',...
-    1e-4, 'globalmin', 0, 'globalxmin', 0);
+   'testflag', 0, 'tol', 0.01, 'showits', 1, 'dimension', 1, 'ep',...
+   1e-4, 'globalmin', 0, 'globalxmin', 0, 'ovexpl', 'GL', 'locbalance', 'GL');
 
 if isempty(bounds)
 % Return the problem information.
@@ -189,7 +254,7 @@ if isempty(bounds)
 % minimum value of function
         OPTI.globalMIN  = getInfo.fmin(VAL.n);
 % minimum point of function
-        OPTI.globalXMIN = getInfo.xmin(VAL.n);
+        OPTI.globalXMIN = arrayfun(@(i) getInfo.xmin(i), 1:VAL.n)';
     end
 else
     VAL.a = bounds(:, 1);               % left bound
@@ -209,6 +274,8 @@ OPTI.TESTflag  = testflag; % terminate if global minima is known
 OPTI.showITS   = showits;  % print iteration stat
 OPTI.TOL       = tol;      % allowable relative error if f_reach is set
 OPTI.ep        = ep;       % global/local weight parameter
+OPTI.oe        = ovexpl;   % protect search from over-exploration
+OPTI.locbalance = locbalance; % balance local selection
 %--------------------------------------------------------------------------
 return
 
@@ -257,13 +324,18 @@ Xmin = MSS.CC(:, 1);
 % Check stop condition if global minima is known
 if OPTI.TESTflag  == 1
     if OPTI.globalMIN ~= 0
-        VAL.perror = 100*(Fmin - OPTI.globalMIN)/abs(OPTI.globalMIN);
+        VAL.perror =100*(Fmin - OPTI.globalMIN)/abs(OPTI.globalMIN);
     else
         VAL.perror = 100*Fmin;
     end
 else
     VAL.perror   = 2;
 end
+
+VAL.limitas = 1/2*norm((1/3*(ones(VAL.n, 1))).^(20));
+VAL.fMinNotImpr    = 0;
+VAL.fMinBeforeImpr = Fmin;
+VAL.Yaro_epsilon   = 0.01;
 
 if OPTI.G_nargout == 3              % Store History
     VAL.history(VAL.itctr, 1) = 0;
@@ -283,8 +355,14 @@ function [VAL, Fmin, Xmin] = Arewedone(OPTI, VAL, MSS)
 
 II         = find(MSS.FF(1:VAL.I) == Fmin);
 fminindex  = II(find(MSS.DD(II) == max(MSS.DD(II)), 1, 'last'));
-Xmin              = MSS.CC(:, fminindex);
+Xmin       = MSS.CC(:, fminindex);
 
+if (abs(Fmin - VAL.fMinBeforeImpr) > VAL.Yaro_epsilon*abs(Fmin))
+    VAL.fMinNotImpr     = 0;
+    VAL.fMinBeforeImpr  = Fmin;
+else
+    VAL.fMinNotImpr     = VAL.fMinNotImpr + 1;
+end
 
 if OPTI.showITS == 1                % Show iteration stats
     VAL.time = toc;
