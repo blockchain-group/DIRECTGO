@@ -84,36 +84,36 @@ if nargin == 1, bounds = []; opts = []; end
 [OPTI, VAL] = Options(opts, nargout, Problem, bounds);
 
 % Alocate sets and create initial variables
-[third, VAL, MSS] = Alocate(OPTI, VAL);
+[VAL, MSS] = Alocate(OPTI, VAL);
 
 % Initialization step
-[OPTI, VAL, Xmin, Fmin, MSS, index] = Inits(VAL, OPTI, Problem, MSS);
+[OPTI, VAL, MSS] = Inits(VAL, OPTI, Problem, MSS);
 
 while VAL.perror > OPTI.TOL                                 % Main loop
     % Selection of potential optimal hyper-rectangles step
     switch OPTI.poh
         case 'IO'
             aa = find(MSS.DD(1:VAL.I) ~= -1);
-            POH = aa(Find_po(MSS.FE(aa), Fmin, OPTI.ep, MSS.DD(aa)));
+            POH = aa(Find_po(MSS.FE(aa), VAL.Fmin, OPTI.ep, MSS.DD(aa)));
         case 'IA'
             aa = find(MSS.DD(1:VAL.I) ~= -1);
             POH = aa(Aggressive(MSS.FE(aa), MSS.DD(aa), 1:length(aa), VAL, MSS));
         otherwise
-            POH = Pareto(VAL, MSS, Xmin);
+            POH = Pareto(VAL, MSS);
     end
 
-    [MSS, VAL] = Subdivisionas(VAL, Problem, third, MSS, POH, Fmin, index);
+    [MSS, VAL] = Subdivisionas(VAL, Problem, MSS, POH);
 
     % Update minima and check stopping conditions
-    [VAL, Fmin, Xmin, index, MSS] = Arewedone(OPTI, VAL, MSS);
+    [VAL, MSS] = Arewedone(OPTI, VAL, MSS);
 end                                                         % End of while
 
 % Return value
-minima      = Fmin;
+minima      = VAL.Fmin;
 if OPTI.G_nargout == 2
-    xatmin    = (abs(VAL.b - VAL.a)).*Xmin(:, 1) + VAL.a;
+    xatmin    = (abs(VAL.b - VAL.a)).*VAL.Xmin(:, 1) + VAL.a;
 elseif OPTI.G_nargout == 3
-    xatmin    = (abs(VAL.b - VAL.a)).*Xmin(:, 1) + VAL.a;
+    xatmin    = (abs(VAL.b - VAL.a)).*VAL.Xmin(:, 1) + VAL.a;
     history   = VAL.history(1:VAL.itctr, 1:4);
 end
 
@@ -169,11 +169,11 @@ return
 % Function: Pareto
 % Purpose:  Selection of potential optimal hyper-rectangles
 %--------------------------------------------------------------------------
-function POH = Pareto(VAL, MSS, Xmin)
+function POH = Pareto(VAL, MSS)
 %--------------------------------------------------------------------------
 % Calculate Euclidean Distatnces
 aa = find(MSS.DD(1:VAL.I) ~= -1);
-Euclid_dist = sum((Xmin(:, 1) - MSS.CC(:, aa)).^2, 1).^0.5;
+Euclid_dist = sum((VAL.Xmin(:, 1) - MSS.CC(:, aa)).^2, 1).^0.5;
 
 % Identify potential optimal hyper-rectangles
 S = aa(Find_poh_pareto(MSS.FE(aa), MSS.DD(aa), 1:length(aa), MSS, VAL, 1));
@@ -334,28 +334,22 @@ return
 % Function: Alocate
 % Purpose: Create necessary data accessible to all workers
 %--------------------------------------------------------------------------
-function [third, VAL, MSS] = Alocate(OPTI, VAL)
+function [VAL, MSS] = Alocate(OPTI, VAL)
 %--------------------------------------------------------------------------
 tic                                      % Mesure time
 VAL.time = toc;                          % initial time
 VAL.perror = 10;                        % initial perror
 
 % alociate MAIN sets
-MSS = struct('FF', zeros(1, OPTI.MAXevals),...
-             'FE', zeros(1, OPTI.MAXevals),...
-             'DD', zeros(1, OPTI.MAXevals),...
-             'LL', zeros(VAL.n, OPTI.MAXevals),...
-             'CC', zeros(VAL.n, OPTI.MAXevals),...
-             'LFA', nan((2*VAL.n) + 1, OPTI.MAXevals),...
-             'LFmin', nan((2*VAL.n) + 1, OPTI.MAXevals));
+MSS = struct('FF', zeros(1, OPTI.MAXevals+10000),...
+             'FE', zeros(1, OPTI.MAXevals+10000),...
+             'DD', zeros(1, OPTI.MAXevals+10000),...
+             'LL', ones(VAL.n, OPTI.MAXevals+10000),...
+             'CC', zeros(VAL.n, OPTI.MAXevals+10000),...
+             'LFA', nan((2*VAL.n) + 1, OPTI.MAXevals+10000),...
+             'LFmin', nan((2*VAL.n) + 1, OPTI.MAXevals+10000));
 
-[VAL.itctr, VAL.I, MSS.DD(1)] = deal(1); 
                     
-third    = zeros(1, OPTI.MAXdeep);       % delta values
-third(1) = 1/4;                          % first delta
-for i = 2:OPTI.MAXdeep                   % all delta
-    third(i)  = (1/2)*third(i - 1);
-end
 if OPTI.G_nargout == 3
     VAL.history = zeros(OPTI.MAXits, 4); % allocating history
 end
@@ -366,24 +360,24 @@ return
 % Function: Inits
 % Purpose: Initialization of the HALRECT
 %--------------------------------------------------------------------------
-function [OPTI, VAL, Xmin, Fmin, MSS, fminindex] = Inits(VAL, OPTI,...
-    Problem, MSS)
+function [OPTI, VAL, MSS] = Inits(VAL, OPTI, Problem, MSS)
 %--------------------------------------------------------------------------
-fminindex = 1;
+VAL.itctr = 1;
+[VAL.fminindex, VAL.I] = deal(1);
 MSS.CC(:, 1) = ones(VAL.n, 1)/2;                  % initial midpoint
-[MSS.FF(1), Fmin, MSS.FE(1)] = deal(feval(Problem.f, (abs(VAL.b -...
+[MSS.FF(1), VAL.Fmin, MSS.FE(1)] = deal(feval(Problem.f, (abs(VAL.b -...
     VAL.a).*(MSS.CC(:, 1)) + VAL.a)));
 MSS.LFA((2*VAL.n) + 1, 1) = 1;
-Xmin(:, 1) = MSS.CC(:, 1);                        % initial point
-MSS.DD(1) = norm((1/2*(ones(VAL.n, 1))).^(MSS.LL(:, 1)), 2);
+VAL.Xmin(:, 1) = MSS.CC(:, 1);                        % initial point
+MSS.DD(1) = norm(MSS.LL(:, 1),  2);
 %--------------------------------------------------------------------------
 
 % Check stop condition if global minima is known
 if OPTI.TESTflag  == 1
     if OPTI.globalMIN ~= 0
-        VAL.perror = 100*(Fmin - OPTI.globalMIN)/abs(OPTI.globalMIN);
+        VAL.perror = 100*(VAL.Fmin - OPTI.globalMIN)/abs(OPTI.globalMIN);
     else
-        VAL.perror = 100*Fmin;
+        VAL.perror = 100*VAL.Fmin;
     end
 else
     VAL.perror = 2;
@@ -395,11 +389,11 @@ return
 % Function  : Subdivision
 % Purpose   : Calculate; new points, function values, lengths and indexes
 %--------------------------------------------------------------------------
-function [MSS, VAL] = Subdivisionas(VAL, O, third, MSS, POHa, Fmin, fminindex)
+function [MSS, VAL] = Subdivisionas(VAL, Problem, MSS, POHa)
 %-------------------------------------------------------------------------- 
 % Find quantile of the diamteters set
 for g = 1:size(POHa, 2)
-    lsas = find(MSS.LL(:, POHa(1, g)) == min(MSS.LL(:, POHa(1, g))));
+    lsas = find(MSS.LL(:, POHa(1, g)) == max(MSS.LL(:, POHa(1, g))));
     pot = VAL.I;
     i = 0;
     partition_dim = 0;
@@ -414,7 +408,7 @@ for g = 1:size(POHa, 2)
             mins = min(dada);
             inds = find(dada == mins, 1, "last");
             i = i + inds - 1;
-            if mins == Fmin && stop <= (length(lsas))*2 + 1
+            if mins == VAL.Fmin && stop <= (length(lsas))*2 + 1
                 DIVIDE = pot + i;
                 partition_dim = 0;
                 stop = stop + 2;
@@ -425,56 +419,47 @@ for g = 1:size(POHa, 2)
         end
 
         if partition_dim == 0
-            ls = find(MSS.LL(:, DIVIDE) == min(MSS.LL(:, DIVIDE)));
+            max_L = max(MSS.LL(:, DIVIDE));
+            ls = find(MSS.LL(:, DIVIDE) == max_L);
             if size(ls, 1) ~= 1
-                DIR = max(abs(MSS.CC(:, fminindex) -...
-                    MSS.CC(:, DIVIDE)), [], 2);
+                DIR = max(abs(MSS.CC(:, VAL.fminindex) - MSS.CC(:, DIVIDE)), [], 2);
                 ls = ls(find(DIR(ls) == max(DIR(ls)), 1, 'first'));
             end
 
             % Calculate side lengths
-            l = MSS.LL(:, DIVIDE);
-            l(ls) = l(ls) + 1;
-            c = MSS.CC(:, DIVIDE)*ones(1, 2);
+            MSS.LL(:, VAL.I + 1:VAL.I + 2) = MSS.LL(:, DIVIDE)*ones(1, 2);
+            MSS.LL(ls, [VAL.I + 1, VAL.I + 2]) = max_L/2;
 
             % Calculate new points 
-            c(ls, 1:2:end) = c(ls, 1:2:end) - diag(repelem(third(min(MSS.LL(:, DIVIDE)) + 1), 1));
-            c(ls, 2:2:end) = c(ls, 2:2:end) + diag(repelem(third(min(MSS.LL(:, DIVIDE)) + 1), 1));
-            MSS.CC(:, VAL.I + 1:VAL.I + 2) = c;
-            MSS.LL(:, VAL.I + 1:VAL.I + 2) = l*ones(1, 2);
-            point = abs(VAL.b - VAL.a).*c + VAL.a;
+
+            MSS.CC(:, VAL.I + 1:VAL.I + 2) = MSS.CC(:, DIVIDE)*ones(1, 2);
+            MSS.CC(ls, VAL.I + 1) = MSS.CC(ls, VAL.I + 1) - max_L/4;
+            MSS.CC(ls, VAL.I + 2) = MSS.CC(ls, VAL.I + 2) + max_L/4;
 
             % Evaluate the objective function
-            MSS.FF(VAL.I + 1:VAL.I + 2) = arrayfun(@(x) feval(O.f, point(:, x)), (1:2));
-
+            MSS.FF(VAL.I + 1) = feval(Problem.f, abs(VAL.b - VAL.a).*MSS.CC(:, VAL.I + 1) + VAL.a);
+            MSS.FF(VAL.I + 2) = feval(Problem.f, abs(VAL.b - VAL.a).*MSS.CC(:, VAL.I + 2) + VAL.a);
+            
             % Calculate diameters
-            MSS.DD(VAL.I + 1:VAL.I + 2) = sum((1/2*ones(VAL.n, 1)).^(l(:, 1)).^2)^0.5;
+            MSS.DD(VAL.I + 1:VAL.I + 2) = norm(MSS.LL(:, VAL.I + 1),  2);
+            MSS.DD(DIVIDE) = -1;
 
             % Find index of the hyper-rectangles
             indd = MSS.LFA(find(~isnan(MSS.LFA(:, DIVIDE))), DIVIDE);
-            jjj = [indd(MSS.CC(ls, indd) <= MSS.CC(ls, DIVIDE))];
-            iii = [indd(MSS.CC(ls, indd) >= MSS.CC(ls, DIVIDE))];
-            MSS.LFA(1:length(jjj), VAL.I + 1) = jjj;
-            MSS.LFA(1:length(iii), VAL.I + 2) = iii;
 
-            inddl = MSS.LFA(find(~isnan(MSS.LFA(:, VAL.I + 1))), VAL.I + 1);
-            inddr = MSS.LFA(find(~isnan(MSS.LFA(:, VAL.I + 2))), VAL.I + 2);
-            inlas = MSS.LFA(find(~isnan(MSS.LFA(:, VAL.I + 1))), VAL.I + 1);
-            inras = MSS.LFA(find(~isnan(MSS.LFA(:, VAL.I + 2))), VAL.I + 2);
-            interss = intersect(inlas, inras);
-            inr = setdiff(inras, inlas); inl = setdiff(inlas, inras);
-            inss = [inl; inr; interss]; MSS.DD(inss) = -1;
-            
+            jjj = [indd(MSS.CC(ls, indd) <= MSS.CC(ls, DIVIDE))];
+            MSS.LFA(1:length(jjj), VAL.I + 1) = jjj;
             MSS.LFA((2*VAL.n) + 1, VAL.I + 1) = VAL.I + 1;
+            MSS.LFmin(1:(length(jjj) + 1), VAL.I + 1) = sort(MSS.FF([jjj; VAL.I + 1]))';
+
+            iii = [indd(MSS.CC(ls, indd) >= MSS.CC(ls, DIVIDE))];
+            MSS.LFA(1:length(iii), VAL.I + 2) = iii;
             MSS.LFA((2*VAL.n) + 1, VAL.I + 2) = VAL.I + 2;
-            indd = MSS.LFA(find(~isnan(MSS.LFA(:, VAL.I + 1))), VAL.I + 1);
-            MSS.LFmin(1:length(indd), VAL.I + 1) = sort(MSS.FF(indd))';
-            indd = MSS.LFA(find(~isnan(MSS.LFA(:, VAL.I + 2))), VAL.I + 2);
-            MSS.LFmin(1:length(indd), VAL.I + 2) = sort(MSS.FF(indd))';
+            MSS.LFmin(1:(length(iii) + 1), VAL.I + 2) = sort(MSS.FF([iii; VAL.I + 2]))';      
             
-            BD = min([MSS.FF(inddl), MSS.FF(VAL.I + 1)]);
+            BD = min([MSS.FF([jjj; VAL.I + 1]), MSS.FF(VAL.I + 1)]);
             BF = max([BD, MSS.FF(VAL.I + 1)]);
-            if BD <= Fmin, Fmin = BD; end
+            if BD <= VAL.Fmin, VAL.Fmin = BD; end
           
             switch VAL.equation
                 case '22a'
@@ -482,14 +467,14 @@ for g = 1:size(POHa, 2)
                 case '22b'
                     MSS.FE(VAL.I + 1) = BD;
                 case '22c'
-                    MSS.FE(VAL.I + 1) = mean([MSS.FF(inddl), MSS.FF(VAL.I + 1)]);
+                    MSS.FE(VAL.I + 1) = mean([MSS.FF([jjj; VAL.I + 1]), MSS.FF(VAL.I + 1)]);
                 otherwise 
                     MSS.FE(VAL.I + 1) = 0.5*BD + 0.5*BF;
             end
 
-            BP = min([MSS.FF(inddr), MSS.FF(VAL.I + 2)]);
+            BP = min([MSS.FF([iii; VAL.I + 2]), MSS.FF(VAL.I + 2)]);
             BH = max([BP, MSS.FF(VAL.I + 2)]);
-            if BP <= Fmin, Fmin = BP; end
+            if BP <= VAL.Fmin, VAL.Fmin = BP; end
 
             switch VAL.equation
                 case '22a'
@@ -497,7 +482,7 @@ for g = 1:size(POHa, 2)
                 case '22b'
                     MSS.FE(VAL.I + 2) = BP;
                 case '22c'
-                    MSS.FE(VAL.I + 2) = mean([MSS.FF(inddr), MSS.FF(VAL.I + 2)]);
+                    MSS.FE(VAL.I + 2) = mean([MSS.FF([iii; VAL.I + 2]), MSS.FF(VAL.I + 2)]);
                 otherwise
                     MSS.FE(VAL.I + 2) = 0.5*BP + 0.5*BH;
             end
@@ -511,24 +496,24 @@ return
 %--------------------------------------------------------------------------
 % Function: Are we done
 % Purpose:  Update minima value and check stopoing conditions
-function [VAL, Fmin, Xmin, fminindex, MSS] = Arewedone(OPTI, VAL, MSS)
+function [VAL, MSS] = Arewedone(OPTI, VAL, MSS)
 %--------------------------------------------------------------------------
-[Fmin, ~]  = min(MSS.FF(1:VAL.I));
-fminindex = find(MSS.FF(1:VAL.I) == Fmin, 1,"last");
-Xmin      = MSS.CC(:, fminindex);
+[VAL.Fmin, ~]  = min(MSS.FF(1:VAL.I));
+VAL.fminindex = find(MSS.FF(1:VAL.I) == VAL.Fmin, 1,"last");
+VAL.Xmin      = MSS.CC(:, VAL.fminindex);
 
 if OPTI.showITS == 1                % Show iteration stats
     VAL.time = toc;
     fprintf(...
     'Iter: %4i   f_min: %15.10f    time(s): %10.05f    fn evals: %8i\n',...
-        VAL.itctr, Fmin, VAL.time, VAL.I);
+        VAL.itctr - 1, VAL.Fmin, VAL.time, VAL.I);
 end
 
 if OPTI.TESTflag == 1               % Check for stop condition
     if OPTI.globalMIN ~= 0          % Calculate error if globalmin known
-        VAL.perror = 100*(Fmin - OPTI.globalMIN)/abs(OPTI.globalMIN);
+        VAL.perror = 100*(VAL.Fmin - OPTI.globalMIN)/abs(OPTI.globalMIN);
     else
-        VAL.perror = 100*Fmin;
+        VAL.perror = 100*VAL.Fmin;
     end
     if VAL.perror < OPTI.TOL
         fprintf('Minima was found with Tolerance: %4i', OPTI.TOL);
@@ -556,7 +541,7 @@ end
 if OPTI.G_nargout == 3              % Store History
     VAL.history(VAL.itctr,1) = VAL.itctr;
     VAL.history(VAL.itctr,2) = VAL.I;
-    VAL.history(VAL.itctr,3) = Fmin;
+    VAL.history(VAL.itctr,3) = VAL.Fmin;
     VAL.history(VAL.itctr,4) = VAL.time;
 end
 % Update iteration number
