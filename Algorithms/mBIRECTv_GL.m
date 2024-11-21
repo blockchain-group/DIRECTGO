@@ -528,11 +528,13 @@ for i = 1:length(bound_index)
         break
     end
 end
+ix = isnan(point_b);
+point_b(ix) = point(ix);
 
 % Check feasibility of boundary point
 constraints = sum(VAL.AA.*point_b', 2) - VAL.BB;
 if_i = find(constraints > 0);
-if ~isempty(if_i)
+if ~isempty(if_i) && norm(point_b - point) ~= 0
     point_t = zeros(VAL.n, length(if_i));
     for i = 1:length(if_i)
         t_t = sum(betha.*VAL.AA(if_i(i), :)');
