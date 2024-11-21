@@ -9,7 +9,7 @@
   - [Algorithms within DIRECTGO](#algorithms_within_directgo)
   - [DIRECTGO Quick Start Guide](#directgo_quick_start_guide)
     - [Example of box constrained global optimization algorithm usage](#example_of_box_constrained_global_optimization_algorithm_usage)
-    - [Example of constrained global optimization algorithm usage](#example_of_constrained_global optimization_algorithm_usage)
+    - [Example of constrained global optimization algorithm usage](#example_of_constrained_global_optimization_algorithm_usage)
     - [Parallel algorithm usage](#parallel_algorithm_usage)
   - [GENDIRECT Framework](#gendirect_framework)
   - [GENDIRECT Quick Start Guide](#gendirect_quick_start_guide)
