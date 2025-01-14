@@ -519,6 +519,7 @@ end
 
 % Find a parameterization of the line and intersaction on boundary
 betha = point - VAL.C;
+betha(betha == 0) = 1e-16; % Add small error
 t = (plane - point)./betha;
 point_b = round(point + betha.*t, 10);
 bound_index = find(point_b == plane);
@@ -528,13 +529,11 @@ for i = 1:length(bound_index)
         break
     end
 end
-ix = isnan(point_b);
-point_b(ix) = point(ix);
 
 % Check feasibility of boundary point
 constraints = sum(VAL.AA.*point_b', 2) - VAL.BB;
 if_i = find(constraints > 0);
-if ~isempty(if_i) && norm(point_b - point) ~= 0
+if ~isempty(if_i)
     point_t = zeros(VAL.n, length(if_i));
     for i = 1:length(if_i)
         t_t = sum(betha.*VAL.AA(if_i(i), :)');
