@@ -1,5 +1,5 @@
 # DIRECTGO
-![languages](https://img.shields.io/badge/language-MATLAB-blue)![release](https://img.shields.io/badge/release-v1.2.0-blue)![OS](https://img.shields.io/badge/OS-windows,linux,macOS-blue)![License](https://img.shields.io/badge/License-MIT-blue)![contributions](https://img.shields.io/badge/contributions-welcome-greene)
+![languages](https://img.shields.io/badge/language-MATLAB-blue)![release](https://img.shields.io/badge/release-v2.1.0-blue)![OS](https://img.shields.io/badge/OS-windows,linux,macOS-blue)![License](https://img.shields.io/badge/License-MIT-blue)![contributions](https://img.shields.io/badge/contributions-welcome-greene)
 
 ## Table of Contents
 
@@ -33,7 +33,8 @@ Additionally, we provide source files of all implemented algorithms in the [Algo
 
 ## History of DIRECTGO Versions
 
-- **DIRECTGO** *v2.0.0 (pre-release)* incorporates the **GENDIRECT**  a generalized framework[^33] that unifies most of the DIRECT-type algorithms for box-constrained global optimization under a single approach.
+- **DIRECTGO** [v2.1.0](https://github.com/blockchain-group/DIRECTGO/releases/tag/v2.1.0) incorporates three new algorithms introduced in[^34]. With these additions, the total number of algorithms in **DIRECTGO** reaches 64.
+- **DIRECTGO** [v2.0.0](https://github.com/blockchain-group/DIRECTGO/releases/tag/v2.0.0) incorporates the **GENDIRECT**  a generalized framework[^33] that unifies most of the DIRECT-type algorithms for box-constrained global optimization under a single approach.
 - **DIRECTGO** [v1.2.0](https://github.com/blockchain-group/DIRECTGO/releases/tag/v1.2.0) incorporates thirteen new algorithms introduced in[^31] and[^32]. With these additions, the total number of algorithms in **DIRECTGO** reaches 61.
 - **DIRECTGO** [v1.1.0](https://github.com/blockchain-group/DIRECTGO/releases/tag/v1.1.0) now comprises twelve additional algorithms introduced in[^30]. With these new additions, the total number of algorithms in **DIRECTGO** amounts to 48.
 - **DIRECTGO** [v1.0.0](https://github.com/blockchain-group/DIRECTGO/releases/tag/v1.0.0) version, as described in[^29], includes the implementation of 36 distinct DIRECT-type algorithms.
@@ -44,12 +45,13 @@ Additionally, we provide source files of all implemented algorithms in the [Algo
 
 ### Algorithms within DIRECTGO
 
-Categorization of 61 implemented DIRECT-type algorithms present in various versions of **DIRECTGO**:
+Categorization of 64 implemented DIRECT-type algorithms present in various versions of **DIRECTGO**:
 
 
 | Version                                                      | Problem type     | Constraints              | Algorithm name & [References]                                |
 | ------------------------------------------------------------ | ---------------- | ------------------------ | ------------------------------------------------------------ |
-| v2.0.0 (pre - release)                                       | Single-objective | Box                      | GENDIRECT, a GENeralized DIRECT-type algorithmic framework softwire[^33]. |
+| [v2.1.0](https://github.com/blockchain-group/DIRECTGO/releases/tag/v2.1.0) | Single-objective | Box                      | Three algorithms used in[^34].                               |
+| [v2.0.0](https://github.com/blockchain-group/DIRECTGO/releases/tag/v2.0.0) | Single-objective | Box                      | GENDIRECT, a GENeralized DIRECT-type algorithmic framework softwire[^33]. |
 | [v1.2.0](https://github.com/blockchain-group/DIRECTGO/releases/tag/v1.2.0) | Single-objective | Box                      | Twelve versions of the HALRECT algorithm[^31].               |
 | [v1.2.0](https://github.com/blockchain-group/DIRECTGO/releases/tag/v1.2.0) | Single-objective | Box, Linearly            | mBIRECTv-GL[^32].                                            |
 | [v1.1.0](https://github.com/blockchain-group/DIRECTGO/releases/tag/v1.1.0) | Single-objective | Box                      | I_DBDP_GL[^30], I_DBDP_IA[^30], I_DBDP_IO[^30], I_DTC_GL[^30], I_DTC_IA[^30], I_DTC_IO[^30], I_DTDV_IA[^30], I_DTDV_GL[^30], I_DTDV_IO[^30], N_DTC_GL[^30], N_DTC_IA[^30], N_DTC_IO[^30]. |
@@ -434,29 +436,37 @@ Four scripts in the folder [Scripts/TOMS](https://github.com/blockchain-group/DI
 
 ### Reproducing results from[^30]
 
-The script in the folder [Scripts/JOGO](https://github.com/blockchain-group/DIRECTGO/tree/main/Scripts/JOGO) can be used to reproduce the results presented in the manuscript: [An empirical study of various candidate selection and partitioning techniques in the DIRECT framework](https://arxiv.org/abs/2109.14912) and given in [Results/JOGO](https://github.com/blockchain-group/DIRECTGO/tree/main/Results/JOGO) folder. The scripts automatically download the required version of [DIRECTGOLib](https://github.com/blockchain-group/DIRECTGOLib) for experiments.
+The script in the folder [Scripts/JOGO](https://github.com/blockchain-group/DIRECTGO/tree/main/Scripts/JOGO) can be used to reproduce the results presented in the manuscript: [An empirical study of various candidate selection and partitioning techniques in the DIRECT framework](https://arxiv.org/abs/2109.14912) and given in [Results/JOGO](https://github.com/blockchain-group/DIRECTGO/tree/main/Results/JOGO) folder.
 
 - `SolveDIRECTGOlib.m` - can be used to repeat experiments presented in TABLE 2.
 
 ### Reproducing results from[^31]
 
-The script in the folder [Scripts/JOGO2](https://github.com/blockchain-group/DIRECTGO/tree/main/Scripts/JOGO2) can be used to reproduce results presented in the manuscript: [Lipschitz-inspired HALRECT algorithm for derivative-free global optimization](https://link.springer.com/article/10.1007/s10898-023-01296-7) and given in [Results/JOGO2](https://github.com/blockchain-group/DIRECTGO/tree/main/Results/JOGO2) folder. The scripts automatically download the required version of [DIRECTGOLib](https://github.com/blockchain-group/DIRECTGOLib) for experiments.
+The script in the folder [Scripts/JOGO2](https://github.com/blockchain-group/DIRECTGO/tree/main/Scripts/JOGO2) can be used to reproduce results presented in the manuscript: [Lipschitz-inspired HALRECT algorithm for derivative-free global optimization](https://link.springer.com/article/10.1007/s10898-023-01296-7) and given in [Results/JOGO2](https://github.com/blockchain-group/DIRECTGO/tree/main/Results/JOGO2) folder.
 
 - `SolveHALRECT.m` - can be used to repeat experiments presented in TABLES 3 and 4, and FIGURES 8 and 9.
 
 ### Reproducing results from[^32]
 
-The script in the folder [Scripts/MDPI](https://github.com/blockchain-group/DIRECTGO/blob/main/Scripts/MDPI/SolveDIRECTGOlib.m) can be used to reproduce results presented in the manuscript: [Novel Algorithm for Linearly Constrained Derivative Free Global Optimization of Lipschitz Functions](https://www.mdpi.com/2227-7390/11/13/2920) and given in [Results/MDPI](https://github.com/blockchain-group/DIRECTGO/tree/main/Results/MDPI) folder. The scripts automatically download the required version of [DIRECTGOLib](https://github.com/blockchain-group/DIRECTGOLib) for experiments.
+The script in the folder [Scripts/MDPI](https://github.com/blockchain-group/DIRECTGO/blob/main/Scripts/MDPI/SolveDIRECTGOlib.m) can be used to reproduce results presented in the manuscript: [Novel Algorithm for Linearly Constrained Derivative Free Global Optimization of Lipschitz Functions](https://www.mdpi.com/2227-7390/11/13/2920) and given in [Results/MDPI](https://github.com/blockchain-group/DIRECTGO/tree/main/Results/MDPI) folder.
 
-- `SolveDIRECTGOlib.m` - can be used to repeat experiments presented in TABLE 1, and FIGURE 6.
+- `SolveDIRECTGOlib.m` - can be used to repeat experiments presented in TABLE 1 and FIGURE 6.
 
 ### Reproducing results from[^33]
 
-The script in the folder [Scripts/GEND](https://github.com/blockchain-group/DIRECTGO/blob/main/Scripts/GEND/ScriptToRun.m) can be used to reproduce results presented in the manuscript: <u>GENDIRECT: a GENeralized DIRECT-type algorithmic framework for derivative-free global optimization</u>. The scripts automatically download the required version of [DIRECTGOLib](https://github.com/blockchain-group/DIRECTGOLib) for experiments.
+The script in the folder [Scripts/GEND](https://github.com/blockchain-group/DIRECTGO/blob/main/Scripts/GEND/ScriptToRun.m) can be used to reproduce results presented in the manuscript: <u>GENDIRECT: a GENeralized DIRECT-type algorithmic framework for derivative-free global optimization</u>.
 
-* `ScriptToRun.m` - can be used to repeat experiments presented in TABLES 4-7, and FIGURES 4-9.
+* `ScriptToRun.m` - can be used to repeat experiments presented in TABLES 5-8 and FIGURES 4-9.
 
+### Reproducing results from[^34]
 
+The script in the folder [Scripts/ASOC](https://github.com/blockchain-group/DIRECTGO/blob/main/Scripts/ASOC/) can be used to reproduce results presented in the manuscript: <u>A practical DIRECT-type algorithm for medium-scale black-box global optimization</u>.
+
+* `ScriptToRunBBOB.m` - can be used to repeat experiments presented in FIGURES 5-8.
+
+* `ScriptToRunDIRECTGOLib.m` - can be used to repeat experiments presented in FIGURES 9-13.
+
+  
 
 ## Citing DIRECTGO
 
@@ -534,4 +544,6 @@ We welcome contributions and corrections to this resource either way:
 [^30]: Stripinis, L., & Paulavičius, R. (2022). An empirical study of various candidate selection and partitioning techniques in the DIRECT framework. *Journal of Global Optimization*. https://doi.org/10.1007/s10898-022-01185-5
 [^31]: Stripinis, L., & Paulavičius, R. (2023). Lipschitz-inspired HALRECT algorithm for derivative-free global optimization. *Journal of Global Optimization*. https://doi.org/10.1007/s10898-023-01296-7
 [^32]: Stripinis, L., & Paulavičius, R. (2023). Novel Algorithm for Linearly Constrained Derivative Free Global Optimization of Lipschitz Functions. *Mathematics*, *11*, 2920. https://doi.org/10.3390/math11132920
-[^33]: Stripinis, L, & Paulavičius, R. (2024). GENDIRECT: a GENeralized DIRECT-type algorithmic framework for derivative-free global optimization. *Summited*.
+[^33]: Stripinis, L, & Paulavičius, R. (2024). GENDIRECT: a GENeralized DIRECT-type algorithmic framework for derivative-free global optimization. *ACM Transactions on Mathematical Software*.
+[^34]: Stripinis, L, & Paulavičius, R. (2026). A practical DIRECT-type algorithm for medium-scale black-box global optimization. *Applied Soft Computing*. Online first, article 116392, 15 pages. https://doi.org/10.1016/j.asoc.2026.116392. 
+
